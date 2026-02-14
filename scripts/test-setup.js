@@ -23,8 +23,8 @@ async function testEnvironmentVariables() {
   
   const requiredVars = [
     'MONGODB_URI',
-    'EMAIL_USER',
-    'EMAIL_PASSWORD',
+    'SMTP_USER',
+    'SMTP_PASSWORD',
     'SMTP_HOST',
     'SMTP_PORT',
     'NODE_ENV',
@@ -34,7 +34,7 @@ async function testEnvironmentVariables() {
   let allPresent = true;
   requiredVars.forEach((envVar) => {
     if (process.env[envVar]) {
-      console.log(`✓ ${envVar}: ${envVar === 'EMAIL_PASSWORD' ? '****' : process.env[envVar]}`);
+      console.log(`✓ ${envVar}: ${envVar === 'SMTP_PASSWORD' ? '****' : process.env[envVar]}`);
       testResults.passed++;
     } else {
       console.log(`✗ ${envVar}: MISSING`);
@@ -106,14 +106,14 @@ async function testEmailConnection() {
       port: process.env.SMTP_PORT,
       secure: false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
       },
     });
 
     await transporter.verify();
     console.log('✓ SMTP credentials verified');
-    console.log(`  From: ${process.env.EMAIL_USER}`);
+    console.log(`  From: ${process.env.SMTP_USER}`);
     console.log(`  Host: ${process.env.SMTP_HOST}:${process.env.SMTP_PORT}`);
     testResults.passed++;
     return transporter;
@@ -137,7 +137,7 @@ async function sendTestEmail(transporter) {
 
   try {
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.SMTP_FROM_EMAIL,
       to: TEST_EMAIL,
       subject: 'MBA Portal - Setup Test Email',
       html: `

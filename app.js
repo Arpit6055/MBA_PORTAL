@@ -33,7 +33,7 @@ app.use(
     secret: process.env.SECRET_KEY || 'mba_portal_secret_2024',
     resave: false,
     saveUninitialized: false, // Don't save session if unmodified
-    store: new MongoStore({
+    store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/mba_portal',
       collectionName: 'sessions',
       ttl: 24 * 60 * 60, // 1 day

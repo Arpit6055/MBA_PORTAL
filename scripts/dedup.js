@@ -47,9 +47,6 @@ async function deduplicateData() {
   try {
     console.log('🧹 Starting Data Deduplication...\n');
 
-    // Connect to database
-    await db.connect();
-
     // Get all articles
     const database = await db.connect();
     const articles = await database.collection('news_articles')

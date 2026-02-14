@@ -22,7 +22,7 @@ async function resetDatabase() {
 
     // Drop each collection
     for (const collection of collections) {
-      await connection.db.dropCollection(collection.name);
+      await connection.dropCollection(collection.name);
       console.log(`✓ Dropped collection: ${collection.name}`);
     }
 

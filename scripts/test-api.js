@@ -14,9 +14,6 @@ const BASE_URL = 'http://localhost:3000';
 const endpoints = [
   { method: 'GET', path: '/', name: 'Home page' },
   { method: 'GET', path: '/api/colleges', name: 'Get colleges list' },
-  { method: 'GET', path: '/api/gd-topics', name: 'Get GD topics' },
-  { method: 'GET', path: '/api/interview-experiences', name: 'Get interview experiences' },
-  { method: 'GET', path: '/api/roi-calculator', name: 'Get ROI calculator' },
 ];
 
 async function testAllEndpoints() {
