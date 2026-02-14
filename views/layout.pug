@@ -1,0 +1,100 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title=title
+    
+    //- TailwindCSS CDN
+    script(src="https://cdn.tailwindcss.com")
+    
+    //- Custom Styles
+    link(rel="stylesheet" href="/style.css")
+    
+    //- Font Awesome for icons
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    
+    style
+      :css
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: #f8f9fa;
+        }
+        .gradient-primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .gradient-text {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+  
+  body
+    //- Navigation
+    nav.bg-white.shadow-md
+      .container.mx-auto.px-4.py-4
+        .flex.justify-between.items-center
+          .flex.items-center.gap-2
+            i.fas.fa-graduation-cap.text-2xl.text-purple-600
+            h1.text-2xl.font-bold.gradient-text MBA Portal
+          
+          .space-x-4
+            if isAuthenticated
+              a.text-gray-700.hover_text-purple-600(href="/dashboard") Dashboard
+              a.text-gray-700.hover_text-purple-600(href="/profile") Profile
+              a.text-gray-700.hover_text-purple-600#logout-btn(href="#") Logout
+            else
+              a.text-gray-700.hover_text-purple-600(href="/login") Login
+
+    //- Main Content
+    main.flex-1
+      block content
+
+    //- Footer
+    footer.bg-gray-800.text-white.py-8.mt-12
+      .container.mx-auto.px-4
+        .grid.grid-cols-1.md_grid-cols-3.gap-8
+          
+          div
+            h4.text-lg.font-bold.mb-4 About Us
+            p.text-gray-400 MBA Aspirant Portal helps you prepare for your dream MBA interviews with curated content, real experiences, and ROI insights.
+
+          div
+            h4.text-lg.font-bold.mb-4 Quick Links
+            ul.space-y-2
+              li: a.text-gray-400.hover_text-white(href="/gd-war-room") GD/PI War Room
+              li: a.text-gray-400.hover_text-white(href="/experiences") Interview Experiences
+              li: a.text-gray-400.hover_text-white(href="/roi-calculator") ROI Calculator
+
+          div
+            h4.text-lg.font-bold.mb-4 Contact
+            p.text-gray-400
+              i.fas.fa-envelope.mr-2
+              | support@mbaaspirant.com
+
+        .border-t.border-gray-700.mt-8.pt-8.text-center.text-gray-400
+          p © 2024 MBA Aspirant Portal. All rights reserved.
+
+    script
+      :javascript
+        // Handle logout
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+              const response = await fetch('/api/auth/logout');
+              if (response.ok) {
+                window.location.href = '/login';
+              }
+            } catch (error) {
+              console.error('Logout error:', error);
+            }
+          });
+        }

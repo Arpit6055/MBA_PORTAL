@@ -1,0 +1,128 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+
+    //- Header
+    .mb-12
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-users.mr-3.text-purple-600
+        | GD/PI War Room
+      p.text-gray-600 Curated group discussion topics to master interview conversations.
+
+    //- Filters
+    .bg-white.p-6.rounded-lg.shadow-md.mb-8
+      .grid.grid-cols-1.md_grid-cols-3.gap-4
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Category
+          select.w-full.px-4.py-2.rounded-lg.border.border-gray-300
+            option(value="") All Categories
+            option(value="abstract") Abstract
+            option(value="current-affairs") Current Affairs
+            option(value="economics") Economics
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Difficulty
+          select.w-full.px-4.py-2.rounded-lg.border.border-gray-300
+            option(value="") All Levels
+            option(value="beginner") Beginner
+            option(value="intermediate") Intermediate
+            option(value="advanced") Advanced
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Search
+          input.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+            type="search"
+            placeholder="Search topics..."
+          )
+
+    //- Topics Grid
+    .grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-3.gap-6
+
+      //- Sample Topic Card 1
+      a.bg-white.rounded-lg.shadow-md.hover_shadow-xl.transition.overflow-hidden.cursor-pointer(
+        href="#topic-detail"
+      )
+        .h-2.bg-gradient-to-r.from-purple-500.to-blue-500
+        .p-6
+          .flex.justify-between.items-start.mb-4
+            span.bg-purple-100.text-purple-700.text-xs.font-bold.px-3.py-1.rounded-full Abstract
+            .text-yellow-400
+              i.fas.fa-star
+              i.fas.fa-star
+              i.fas.fa-star
+          
+          h3.text-xl.font-bold.text-gray-800.mb-2 AI in Marketing
+          p.text-sm.text-gray-600.mb-4
+            | How artificial intelligence is revolutionizing marketing strategies 
+            | and changing consumer behavior patterns.
+          
+          .flex.items-center.gap-4.text-xs.text-gray-500
+            span
+              i.fas.fa-comment.mr-1
+              | 24 Arguments
+            span
+              i.fas.fa-chart.mr-1
+              | 8 Data Points
+            span
+              i.fas.fa-bookmark.mr-1
+              | Saved
+
+      //- Sample Topic Card 2
+      a.bg-white.rounded-lg.shadow-md.hover_shadow-xl.transition.overflow-hidden.cursor-pointer(
+        href="#topic-detail"
+      )
+        .h-2.bg-gradient-to-r.from-blue-500.to-cyan-500
+        .p-6
+          .flex.justify-between.items-start.mb-4
+            span.bg-blue-100.text-blue-700.text-xs.font-bold.px-3.py-1.rounded-full Current Affairs
+            .text-yellow-400
+              i.fas.fa-star
+              i.fas.fa-star
+          
+          h3.text-xl.font-bold.text-gray-800.mb-2 India's Renewable Energy Goals
+          p.text-sm.text-gray-600.mb-4
+            | India's ambitious targets for renewable energy by 2030 and 
+            | implications on traditional energy sectors.
+          
+          .flex.items-center.gap-4.text-xs.text-gray-500
+            span
+              i.fas.fa-comment.mr-1
+              | 18 Arguments
+            span
+              i.fas.fa-chart.mr-1
+              | 12 Data Points
+
+      //- Sample Topic Card 3
+      a.bg-white.rounded-lg.shadow-md.hover_shadow-xl.transition.overflow-hidden.cursor-pointer(
+        href="#topic-detail"
+      )
+        .h-2.bg-gradient-to-r.from-green-500.to-emerald-500
+        .p-6
+          .flex.justify-between.items-start.mb-4
+            span.bg-green-100.text-green-700.text-xs.font-bold.px-3.py-1.rounded-full Economics
+            .text-yellow-400
+              i.fas.fa-star
+              i.fas.fa-star
+              i.fas.fa-star
+              i.fas.fa-star
+          
+          h3.text-xl.font-bold.text-gray-800.mb-2 Cryptocurrency Regulation
+          p.text-sm.text-gray-600.mb-4
+            | Should governments regulate cryptocurrencies? Impact on fintech 
+            | innovation and financial stability.
+          
+          .flex.items-center.gap-4.text-xs.text-gray-500
+            span
+              i.fas.fa-comment.mr-1
+              | 32 Arguments
+            span
+              i.fas.fa-chart.mr-1
+              | 15 Data Points
+
+    //- Load More
+    .text-center.mt-12
+      button.border-2.border-purple-600.text-purple-600.px-8.py-3.rounded-lg.font-bold.hover_bg-purple-50.transition
+        i.fas.fa-spinner.mr-2
+        | Load More Topics

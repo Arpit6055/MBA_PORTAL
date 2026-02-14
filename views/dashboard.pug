@@ -1,0 +1,169 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+    
+    //- Header
+    .mb-12
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-tachometer-alt.mr-3.text-purple-600
+        | Dashboard
+      p.text-gray-600 Welcome back! Here's your MBA prep overview.
+
+    //- Quick Stats
+    .grid.grid-cols-1.md_grid-cols-4.gap-6.mb-12
+      
+      .bg-white.p-6.rounded-lg.shadow-md.border-t-4.border-purple-600
+        .flex.justify-between.align-center
+          div
+            p.text-gray-600.text-sm PROFILE COMPLETION
+            p.text-3xl.font-bold.text-gray-800 75%
+          i.fas.fa-user.text-4xl.text-purple-300
+        a.text-purple-600.text-sm.hover_underline.mt-2.inline-block(href="/profile") Complete Profile
+      
+      .bg-white.p-6.rounded-lg.shadow-md.border-t-4.border-blue-600
+        .flex.justify-between.align-center
+          div
+            p.text-gray-600.text-sm INTERVIEWS PREPARED
+            p.text-3xl.font-bold.text-gray-800 12
+          i.fas.fa-fire.text-4xl.text-blue-300
+      
+      .bg-white.p-6.rounded-lg.shadow-md.border-t-4.border-green-600
+        .flex.justify-between.align-center
+          div
+            p.text-gray-600.text-sm GD TOPICS STUDIED
+            p.text-3xl.font-bold.text-gray-800 28
+          i.fas.fa-book.text-4xl.text-green-300
+      
+      .bg-white.p-6.rounded-lg.shadow-md.border-t-4.border-yellow-600
+        .flex.justify-between.align-center
+          div
+            p.text-gray-600.text-sm MBA COLLEGES TARGETED
+            p.text-3xl.font-bold.text-gray-800 5
+          i.fas.fa-graduation-cap.text-4xl.text-yellow-300
+
+    //- Main Content Grid
+    .grid.grid-cols-1.lg_grid-cols-3.gap-8
+
+      //- Left Column (Main Content)
+      .lg_col-span-2
+
+        //- Quick Actions
+        .bg-white.p-8.rounded-lg.shadow-md.mb-8
+          h3.text-2xl.font-bold.text-gray-800.mb-6
+            i.fas.fa-rocket.mr-2.text-purple-600
+            | Quick Actions
+          
+          .grid.grid-cols-1.sm_grid-cols-2.gap-4
+            
+            a.p-4.bg-gradient-to-br.from-purple-50.to-blue-50.rounded-lg.border-2.border-purple-200.hover_border-purple-400.hover_shadow-md.transition(
+              href="/gd-war-room"
+            )
+              i.fas.fa-users.text-2xl.text-purple-600.mb-2.block
+              p.font-semibold.text-gray-800 GD/PI War Room
+              p.text-sm.text-gray-600 Explore discussion topics
+            
+            a.p-4.bg-gradient-to-br.from-blue-50.to-indigo-50.rounded-lg.border-2.border-blue-200.hover_border-blue-400.hover_shadow-md.transition(
+              href="/experiences"
+            )
+              i.fas.fa-book.text-2xl.text-blue-600.mb-2.block
+              p.font-semibold.text-gray-800 Real Experiences
+              p.text-sm.text-gray-600 Read interview stories
+            
+            a.p-4.bg-gradient-to-br.from-green-50.to-emerald-50.rounded-lg.border-2.border-green-200.hover_border-green-400.hover_shadow-md.transition(
+              href="/roi-calculator"
+            )
+              i.fas.fa-calculator.text-2xl.text-green-600.mb-2.block
+              p.font-semibold.text-gray-800 ROI Calculator
+              p.text-sm.text-gray-600 Calculate MBA returns
+            
+            a.p-4.bg-gradient-to-br.from-yellow-50.to-orange-50.rounded-lg.border-2.border-yellow-200.hover_border-yellow-400.hover_shadow-md.transition(
+              href="/profile"
+            )
+              i.fas.fa-edit.text-2xl.text-yellow-600.mb-2.block
+              p.font-semibold.text-gray-800 Complete Profile
+              p.text-sm.text-gray-600 Add your details
+
+        //- Recent Activity
+        .bg-white.p-8.rounded-lg.shadow-md.mb-8
+          h3.text-2xl.font-bold.text-gray-800.mb-6
+            i.fas.fa-history.mr-2.text-purple-600
+            | Recent Activity
+          
+          .space-y-4
+            .flex.items-start.gap-4
+              .flex-shrink-0
+                .w-10.h-10.bg-purple-100.rounded-full.flex.items-center.justify-center
+                  i.fas.fa-check.text-purple-600
+              .flex-1
+                p.font-semibold.text-gray-800 Completed "Banking Sector Analysis" GD topic
+                p.text-sm.text-gray-500 2 hours ago
+            
+            .flex.items-start.gap-4
+              .flex-shrink-0
+                .w-10.h-10.bg-blue-100.rounded-full.flex.items-center.justify-center
+                  i.fas.fa-bookmark.text-blue-600
+              .flex-1
+                p.font-semibold.text-gray-800 Saved interview experience from IIM-A
+                p.text-sm.text-gray-500 5 hours ago
+            
+            .flex.items-start.gap-4
+              .flex-shrink-0
+                .w-10.h-10.bg-green-100.rounded-full.flex.items-center.justify-center
+                  i.fas.fa-user.text-green-600
+              .flex-1
+                p.font-semibold.text-gray-800 Updated profile with work experience
+                p.text-sm.text-gray-500 1 day ago
+
+      //- Right Column (Sidebar)
+      .lg_col-span-1
+
+        //- Profile Preview
+        .bg-white.p-6.rounded-lg.shadow-md.mb-8
+          .text-center.mb-6
+            .w-16.h-16.mx-auto.mb-4.bg-gradient-to-br.from-purple-400.to-blue-400.rounded-full.flex.items-center.justify-center.text-white.text-2xl
+              i.fas.fa-user
+            
+            if user
+              p.font-semibold.text-gray-800= user.email
+            p.text-sm.text-gray-600 MBA Aspirant
+          
+          button.w-full.gradient-primary.text-white.py-2.rounded-lg.font-semibold.hover_opacity-90.transition(
+            onclick="window.location.href='/profile'"
+          )
+            i.fas.fa-edit.mr-2
+            | Edit Profile
+
+        //- Upcoming Events
+        .bg-white.p-6.rounded-lg.shadow-md.mb-8
+          h4.text-lg.font-bold.text-gray-800.mb-4
+            i.fas.fa-calendar.mr-2.text-purple-600
+            | Upcoming
+          
+          .space-y-3.text-sm
+            .p-3.bg-purple-50.rounded.border-l-4.border-purple-400
+              p.font-semibold.text-gray-800 Interview Mock
+              p.text-gray-600 Feb 20, 2024
+            
+            .p-3.bg-blue-50.rounded.border-l-4.border-blue-400
+              p.font-semibold.text-gray-800 Group Discussion
+              p.text-gray-600 Feb 25, 2024
+
+        //- Progress Badges
+        .bg-white.p-6.rounded-lg.shadow-md
+          h4.text-lg.font-bold.text-gray-800.mb-4
+            i.fas.fa-trophy.mr-2.text-yellow-600
+            | Achievements
+          
+          .space-y-2
+            .flex.items-center.gap-2
+              span.text-2xl 🏆
+              span.text-sm.text-gray-700 Profile Complete
+            
+            .flex.items-center.gap-2
+              span.text-2xl 📚
+              span.text-sm.text-gray-700 10 Topics Explored
+            
+            .flex.items-center.gap-2
+              span.text-2xl 🎯
+              span.text-sm.text-gray-700 5 Colleges Targeted

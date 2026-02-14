@@ -1,0 +1,34 @@
+{
+  "name": "mba-aspirant-portal",
+  "version": "1.0.0",
+  "description": "MBA Aspirant Prep Portal - GD/PI, ROI Calculator, Interview Experiences",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "init-db": "node scripts/init-db.js"
+  },
+  "keywords": [
+    "MBA",
+    "Interview",
+    "GD",
+    "PI",
+    "ROI"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongodb": "^5.8.1",
+    "nodemailer": "^8.0.1",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

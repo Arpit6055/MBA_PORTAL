@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .min-h-screen.flex.items-center.justify-center.py-12.px-4
+    .text-center
+      .text-6xl.font-bold.gradient-text.mb-4 404
+      h2.text-3xl.font-bold.text-gray-800.mb-2 Page Not Found
+      p.text-gray-600.text-lg.mb-8 Sorry, the page you're looking for doesn't exist.
+
+      a.inline-block.gradient-primary.text-white.px-8.py-3.rounded-lg.font-bold.hover_opacity-90.transition(
+        href="/"
+      )
+        i.fas.fa-arrow-left.mr-2
+        | Go Back Home

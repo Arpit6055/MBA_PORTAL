@@ -1,0 +1,362 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+    
+    //- Header
+    .mb-12
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-user-circle.mr-3.text-purple-600
+        | My MBA Resumé
+      p.text-gray-600 Build your professional profile with academics, experience, and aspirations.
+
+    .grid.grid-cols-1.lg_grid-cols-3.gap-8
+
+      //- Main Form
+      .lg_col-span-2.bg-white.p-8.rounded-lg.shadow-md
+
+        //- Tab Navigation
+        .flex.gap-4.mb-8.border-b
+          button.tab-btn.pb-4.border-b-2.border-purple-600.font-semibold.text-gray-800.active(
+            data-tab="academics"
+          )
+            i.fas.fa-graduation-cap.mr-2
+            | Academics
+          
+          button.tab-btn.pb-4.border-b-2.border-transparent.font-semibold.text-gray-600.hover_text-gray-800(
+            data-tab="experience"
+          )
+            i.fas.fa-briefcase.mr-2
+            | Experience
+          
+          button.tab-btn.pb-4.border-b-2.border-transparent.font-semibold.text-gray-600.hover_text-gray-800(
+            data-tab="colleges"
+          )
+            i.fas.fa-school.mr-2
+            | Colleges
+
+        //- Tab 1: Academics
+        #academicsTab.tab-content
+
+          .space-y-6
+
+            //- Academic Profile Info Box
+            .bg-purple-50.border-l-4.border-purple-600.p-4.rounded
+              h4.font-semibold.text-gray-800.mb-2
+                i.fas.fa-info-circle.mr-2.text-purple-600
+                | The 9/9/9 Format
+              p.text-sm.text-gray-700
+                | Your marks will be displayed as single-digit grades (0-9) on your MBA profile. 
+                | Example: 92%, 88%, 75% → Displayed as 9/8/7
+              p.text-xs.text-gray-600.mt-2
+                strong Scale: | 90-100%=9, 80-89%=8, 70-79%=7, 60-69%=6, etc.
+
+            form#academicsForm.space-y-6
+
+              //- 10th Marks
+              .form-group
+                label.block.text-gray-800.font-semibold.mb-2(for="marks10th")
+                  span 10th Board Marks (%)
+                  span.text-red-500 *
+                .flex.gap-4.items-end
+                  div.flex-1
+                    input#marks10th.w-full.px-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-purple-500.focus_ring-2.focus_ring-purple-200(
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      placeholder="Enter percentage (0-100)"
+                    )
+                  div
+                    .text-center
+                      p.text-xs.text-gray-600.mb-1 9-Point Scale
+                      .text-2xl.font-bold.text-purple-600#grade10th -
+                p.text-xs.text-gray-500.mt-1 Save exactly as shown on your board certificate
+
+              //- 12th Marks
+              .form-group
+                label.block.text-gray-800.font-semibold.mb-2(for="marks12th")
+                  span 12th Board Marks (%)
+                  span.text-red-500 *
+                .flex.gap-4.items-end
+                  div.flex-1
+                    input#marks12th.w-full.px-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-purple-500.focus_ring-2.focus_ring-purple-200(
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      placeholder="Enter percentage (0-100)"
+                    )
+                  div
+                    .text-center
+                      p.text-xs.text-gray-600.mb-1 9-Point Scale
+                      .text-2xl.font-bold.text-purple-600#grade12th -
+                p.text-xs.text-gray-500.mt-1 Save exactly as shown on your board certificate
+
+              //- Graduation Marks
+              .form-group
+                label.block.text-gray-800.font-semibold.mb-2(for="marksGrad")
+                  span Graduation Marks (%)
+                  span.text-red-500 *
+                .flex.gap-4.items-end
+                  div.flex-1
+                    input#marksGrad.w-full.px-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-purple-500.focus_ring-2.focus_ring-purple-200(
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      placeholder="Enter percentage (0-100)"
+                    )
+                  div
+                    .text-center
+                      p.text-xs.text-gray-600.mb-1 9-Point Scale
+                      .text-2xl.font-bold.text-purple-600#gradeGrad -
+                p.text-xs.text-gray-500.mt-1 Save as CGPA or percentage
+
+              //- Stream
+              .form-group
+                label.block.text-gray-800.font-semibold.mb-2(for="stream")
+                  span Graduation Stream
+                  span.text-red-500 *
+                select#stream.w-full.px-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-purple-500.focus_ring-2.focus_ring-purple-200
+                  option(value="") -- Select Stream --
+                  option(value="BE/BTech") BE / BTech (Engineering)
+                  option(value="BBA") BBA (Business Administration)
+                  option(value="Bcom") B.Com (Commerce)
+                  option(value="BA") B.A. (Arts)
+                  option(value="BSc") B.Sc. (Science)
+                  option(value="Other") Other
+
+              .flex.gap-4.mt-8
+                button#saveAcademics.flex-1.gradient-primary.text-white.py-3.rounded-lg.font-bold.hover_opacity-90.transition(
+                  type="button"
+                )
+                  i.fas.fa-save.mr-2
+                  | Save Academic Profile
+                
+                button.flex-1.border-2.border-gray-300.text-gray-700.py-3.rounded-lg.font-bold.hover_bg-gray-50.transition(
+                  type="reset"
+                )
+                  i.fas.fa-undo.mr-2
+                  | Clear
+
+        //- Tab 2: Work Experience
+        #experienceTab.tab-content.hidden
+
+          .space-y-6
+
+            //- Add Experience Button
+            button#addExperienceBtn.w-full.border-2.border-dashed.border-purple-300.text-purple-600.py-4.rounded-lg.font-semibold.hover_bg-purple-50.transition
+              i.fas.fa-plus.mr-2
+              | Add Work Experience
+
+            //- Experience List
+            #experienceList.space-y-4
+
+              //- Sample experience (will be populated dynamically)
+              .bg-gray-50.p-4.rounded-lg.border-l-4.border-blue-600
+                .flex.justify-between.items-start.mb-2
+                  div
+                    p.font-bold.text-gray-800 Tech Mahindra
+                    p.text-sm.text-gray-600 Software Engineer
+                  button.text-red-500.hover_text-red-700(onclick="deleteExperience(this)")
+                    i.fas.fa-trash
+
+                p.text-xs.text-gray-600.mt-2
+                  strong Duration: | 24 months
+                  br
+                  strong Status: | Current
+
+        //- Tab 3: Target Colleges
+        #collegesTab.tab-content.hidden
+
+          .space-y-6
+
+            p.text-gray-600.mb-4 Select up to 5 target colleges for your MBA aspirations.
+
+            form#collegesForm
+
+              .grid.grid-cols-1.sm_grid-cols-2.gap-4
+
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="IIM-A")
+                  span.ml-3.font-semibold IIM-A
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="IIM-B")
+                  span.ml-3.font-semibold IIM-B
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="IIM-C")
+                  span.ml-3.font-semibold IIM-C
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="XLRI")
+                  span.ml-3.font-semibold XLRI
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="FMS-Delhi")
+                  span.ml-3.font-semibold FMS Delhi
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="ISB")
+                  span.ml-3.font-semibold ISB
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="JBIMS")
+                  span.ml-3.font-semibold JBIMS
+                
+                label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-purple-50.transition
+                  input.w-4.h-4.text-purple-600(type="checkbox" name="colleges" value="SPJIMR")
+                  span.ml-3.font-semibold SPJIMR
+
+              button#saveColleges.w-full.mt-6.gradient-primary.text-white.py-3.rounded-lg.font-bold.hover_opacity-90.transition(
+                type="button"
+              )
+                i.fas.fa-save.mr-2
+                | Save Colleges
+
+      //- Right Sidebar - Profile Preview
+      .lg_col-span-1
+
+        //- Profile Card Preview
+        .bg-white.p-6.rounded-lg.shadow-md.sticky.top-4
+
+          .text-center.mb-6
+            .w-20.h-20.mx-auto.mb-4.bg-gradient-to-br.from-purple-400.to-blue-400.rounded-full.flex.items-center.justify-center.text-white.text-4xl
+              i.fas.fa-user
+
+            if user
+              p.font-bold.text-gray-800= user.email
+
+          //- 9/9/9 Badge Display
+          .bg-gradient-to-br.from-purple-50.to-blue-50.p-6.rounded-lg.mb-6.text-center.border-2.border-purple-200
+            p.text-xs.text-gray-600.uppercase.tracking-wider.mb-2 Academic Profile
+            .text-4xl.font-bold.text-purple-600.font-mono
+              span#badgeDisplay 0/0/0
+            
+            p.text-xs.text-gray-600.mt-3
+              strong 10th / 12th / Graduation
+            
+            p.text-xs.text-gray-500.mt-2 Updates as you save your marks
+
+          //- Profile Completion
+          .mb-6
+            .flex.justify-between.items-center.mb-2
+              p.text-sm.font-semibold.text-gray-800 Profile Completion
+              p.text-sm.font-bold.text-purple-600#completionPercent 25%
+            
+            .w-full.bg-gray-200.rounded-full.h-2
+              .bg-gradient-primary.h-2.rounded-full(style="width: 25%;")
+
+          //- Status Indicators
+          .space-y-2
+            .flex.items-center.gap-2
+              i.fas.fa-check-circle.text-green-500
+              span.text-sm.text-gray-700 Email Verified
+            
+            .flex.items-center.gap-2
+              span#academicsCheck
+                i.fas.fa-circle.text-gray-400
+              span.text-sm.text-gray-700 Academics Complete
+            
+            .flex.items-center.gap-2
+              span#experienceCheck
+                i.fas.fa-circle.text-gray-400
+              span.text-sm.text-gray-700 Experience Added
+            
+            .flex.items-center.gap-2
+              span#collegesCheck
+                i.fas.fa-circle.text-gray-400
+              span.text-sm.text-gray-700 Colleges Selected
+
+  script
+    :javascript
+      // ===========================
+      // Academic Profile Management
+      // ===========================
+
+      const marks10th = document.getElementById('marks10th');
+      const marks12th = document.getElementById('marks12th');
+      const marksGrad = document.getElementById('marksGrad');
+      const stream = document.getElementById('stream');
+
+      const grade10th = document.getElementById('grade10th');
+      const grade12th = document.getElementById('grade12th');
+      const gradeGrad = document.getElementById('gradeGrad');
+      const badgeDisplay = document.getElementById('badgeDisplay');
+
+      /**
+       * Convert percentage to 0-9 scale
+       * 90-100 = 9
+       * 80-89 = 8
+       * 70-79 = 7
+       * 60-69 = 6
+       * 50-59 = 5
+       * 40-49 = 4
+       * 30-39 = 3
+       * 20-29 = 2
+       * 10-19 = 1
+       * 0-9 = 0
+       */
+      function percentageToGrade(percentage) {
+        if (percentage === null || percentage === '') return '-';
+        const num = parseFloat(percentage);
+        if (isNaN(num)) return '-';
+        
+        if (num >= 90) return '9';
+        if (num >= 80) return '8';
+        if (num >= 70) return '7';
+        if (num >= 60) return '6';
+        if (num >= 50) return '5';
+        if (num >= 40) return '4';
+        if (num >= 30) return '3';
+        if (num >= 20) return '2';
+        if (num >= 10) return '1';
+        return '0';
+      }
+
+      function updateGrades() {
+        const g10 = percentageToGrade(marks10th.value);
+        const g12 = percentageToGrade(marks12th.value);
+        const gGrad = percentageToGrade(marksGrad.value);
+
+        grade10th.textContent = g10;
+        grade12th.textContent = g12;
+        gradeGrad.textContent = gGrad;
+
+        badgeDisplay.textContent = `${g10}/${g12}/${gGrad}`;
+      }
+
+      marks10th.addEventListener('input', updateGrades);
+      marks12th.addEventListener('input', updateGrades);
+      marksGrad.addEventListener('input', updateGrades);
+
+      // Tab Navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const tabName = e.target.closest('.tab-btn').dataset.tab;
+          
+          document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+          document.getElementById(tabName + 'Tab').classList.remove('hidden');
+
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('border-purple-600'));
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.add('border-transparent', 'text-gray-600'));
+          e.target.closest('.tab-btn').classList.remove('border-transparent', 'text-gray-600');
+          e.target.closest('.tab-btn').classList.add('border-purple-600', 'text-gray-800');
+        });
+      });
+
+      // Save Academic Profile
+      document.getElementById('saveAcademics').addEventListener('click', async () => {
+        console.log('Saving academic profile...');
+        // API call would go here
+      });
+
+      // Save Colleges
+      document.getElementById('saveColleges').addEventListener('click', async () => {
+        const selected = Array.from(document.querySelectorAll('input[name="colleges"]:checked'))
+          .map(cb => cb.value);
+        console.log('Selected colleges:', selected);
+        // API call would go here
+      });

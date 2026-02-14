@@ -1,0 +1,371 @@
+extends layout
+
+block content
+  .min-h-screen.flex.items-center.justify-center.bg-gradient-to-br.from-purple-50.to-blue-50.py-12.px-4
+    .w-full.max-w-md
+      //- Card Container
+      .bg-white.rounded-lg.shadow-2xl.overflow-hidden
+        
+        //- Header
+        .gradient-primary.px-8.py-8
+          h2.text-3xl.font-bold.text-white.mb-2
+            i.fas.fa-lock.mr-2
+            | Secure Login
+          p.text-purple-100 No password required. OTP-based authentication.
+
+        //- Form Content
+        .px-8.py-8
+
+          //- Step 1: Email Entry
+          #emailStep.form-step
+            form#emailForm.space-y-4
+              
+              .form-group
+                label.block.text-gray-700.font-semibold.mb-2(for="email")
+                  i.fas.fa-envelope.mr-2.text-purple-600
+                  | Email Address
+                input#email.w-full.px-4.py-3.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-purple-500.focus_ring-2.focus_ring-purple-200(
+                  type="email"
+                  placeholder="your-email@example.com"
+                  required
+                )
+                .text-sm.text-gray-500.mt-2 We'll send you a 6-digit OTP to verify your identity.
+
+              .form-group
+                button#requestOtpBtn.w-full.gradient-primary.text-white.font-bold.py-3.rounded-lg.hover_opacity-90.transition.duration-200(
+                  type="submit"
+                )
+                  i.fas.fa-paper-plane.mr-2
+                  span Send OTP
+              
+              .text-sm.text-gray-600.text-center.mt-4
+                | Don't have an account? Auto-signup on OTP verification.
+
+              //- Error Message
+              #emailError.text-red-500.text-sm.mt-2.hidden
+              
+              //- Loading State
+              #loading.text-center.py-4.hidden
+                .inline-block
+                  .animate-spin
+                    i.fas.fa-spinner.text-purple-600.text-2xl
+
+          //- Step 2: OTP Verification
+          #otpStep.form-step.hidden
+            .bg-purple-50.p-4.rounded-lg.mb-6
+              p.text-gray-700
+                | Enter the 6-digit OTP sent to 
+                span#emailDisplay.font-bold
+                | 
+                a#changeEmail.text-purple-600.hover_underline.cursor-pointer (Change?)
+
+            form#otpForm.space-y-4
+
+              .form-group
+                label.block.text-gray-700.font-semibold.mb-2(for="otp")
+                  i.fas.fa-key.mr-2.text-purple-600
+                  | One-Time Password
+                .flex.gap-2.justify-center#otpInputs
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="0"
+                    inputmode="numeric"
+                  )
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="1"
+                    inputmode="numeric"
+                  )
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="2"
+                    inputmode="numeric"
+                  )
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="3"
+                    inputmode="numeric"
+                  )
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="4"
+                    inputmode="numeric"
+                  )
+                  input.otp-input.w-12.h-12.text-center.text-2xl.font-bold.border.border-gray-300.rounded-lg.focus_outline-none.focus_border-purple-500(
+                    type="text"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    data-index="5"
+                    inputmode="numeric"
+                  )
+
+              //- Timer
+              .text-center.text-sm.mt-4
+                p#timerText.text-gray-600 Expires in 
+                  span#timer.font-bold 600
+                  | s
+                a#resendOtpBtn.text-purple-600.hover_underline.cursor-pointer.mt-2.inline-block.hidden Resend OTP
+
+              .form-group
+                button#verifyOtpBtn.w-full.gradient-primary.text-white.font-bold.py-3.rounded-lg.hover_opacity-90.transition.duration-200(
+                  type="submit"
+                  disabled
+                )
+                  i.fas.fa-check.mr-2
+                  span Verify OTP
+
+              //- Error Message
+              #otpError.text-red-500.text-sm.mt-2.hidden
+
+              //- Loading State
+              #otpLoading.text-center.py-4.hidden
+                .inline-block
+                  .animate-spin
+                    i.fas.fa-spinner.text-purple-600.text-2xl
+
+        //- Features Section
+        .bg-gray-50.px-8.py-6.border-t
+          h3.text-gray-800.font-semibold.mb-4 What you get:
+          ul.space-y-2.text-sm.text-gray-600
+            li
+              i.fas.fa-check.text-green-500.mr-2
+              | Instant OTP delivery
+            li
+              i.fas.fa-check.text-green-500.mr-2
+              | Secure authentication
+            li
+              i.fas.fa-check.text-green-500.mr-2
+              | No password to remember
+
+  script
+    :javascript
+      // ===========================
+      // OTP Login Flow
+      // ===========================
+
+      let currentEmail = '';
+      let otpTimer;
+      const OTP_EXPIRY = 600; // 10 minutes in seconds
+
+      // ===== Step 1: Request OTP =====
+      const emailForm = document.getElementById('emailForm');
+      const emailInput = document.getElementById('email');
+      const requestOtpBtn = document.getElementById('requestOtpBtn');
+      const emailError = document.getElementById('emailError');
+      const loading = document.getElementById('loading');
+      const emailStep = document.getElementById('emailStep');
+      const otpStep = document.getElementById('otpStep');
+
+      emailForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        emailError.classList.add('hidden');
+
+        // Validate email
+        if (!isValidEmail(email)) {
+          showError(emailError, 'Please enter a valid email address');
+          return;
+        }
+
+        // Show loading
+        loading.classList.remove('hidden');
+        requestOtpBtn.disabled = true;
+
+        try {
+          const response = await fetch('/api/auth/request-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to send OTP');
+          }
+
+          // Success - move to step 2
+          currentEmail = email;
+          emailStep.classList.add('hidden');
+          otpStep.classList.remove('hidden');
+          document.getElementById('emailDisplay').textContent = email;
+          startOtpTimer();
+
+        } catch (error) {
+          showError(emailError, error.message);
+        } finally {
+          loading.classList.add('hidden');
+          requestOtpBtn.disabled = false;
+        }
+      });
+
+      // ===== Step 2: Verify OTP =====
+      const otpInputs = document.querySelectorAll('.otp-input');
+      const otpForm = document.getElementById('otpForm');
+      const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+      const otpError = document.getElementById('otpError');
+      const otpLoading = document.getElementById('otpLoading');
+      const resendOtpBtn = document.getElementById('resendOtpBtn');
+      const changeEmailBtn = document.getElementById('changeEmail');
+
+      // OTP Input Navigation
+      otpInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          if (e.target.value && /[0-9]/.test(e.target.value)) {
+            if (index < otpInputs.length - 1) {
+              otpInputs[index + 1].focus();
+            }
+            checkOtpComplete();
+          }
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !input.value && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+      });
+
+      function checkOtpComplete() {
+        const allFilled = Array.from(otpInputs).every(input => input.value);
+        verifyOtpBtn.disabled = !allFilled;
+      }
+
+      otpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const otp = Array.from(otpInputs).map(input => input.value).join('');
+        otpError.classList.add('hidden');
+
+        if (otp.length !== 6) {
+          showError(otpError, 'Please enter all 6 digits');
+          return;
+        }
+
+        otpLoading.classList.remove('hidden');
+        verifyOtpBtn.disabled = true;
+
+        try {
+          const response = await fetch('/api/auth/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: currentEmail, otp })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to verify OTP');
+          }
+
+          // Success - redirect to dashboard or profile completion
+          showSuccess('OTP verified! Redirecting...');
+          clearOtpTimer();
+          
+          setTimeout(() => {
+            window.location.href = data.redirectUrl || '/dashboard';
+          }, 1500);
+
+        } catch (error) {
+          showError(otpError, error.message);
+          otpInputs.forEach(input => input.value = '');
+          otpInputs[0].focus();
+        } finally {
+          otpLoading.classList.add('hidden');
+          checkOtpComplete();
+        }
+      });
+
+      // Resend OTP
+      resendOtpBtn.addEventListener('click', async () => {
+        otpError.classList.add('hidden');
+        
+        try {
+          const response = await fetch('/api/auth/resend-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: currentEmail })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to resend OTP');
+          }
+
+          // Reset timer
+          otpInputs.forEach(input => input.value = '');
+          otpInputs[0].focus();
+          startOtpTimer();
+          showSuccess('New OTP sent to your email');
+
+        } catch (error) {
+          showError(otpError, error.message);
+        }
+      });
+
+      // Change email
+      changeEmailBtn.addEventListener('click', () => {
+        emailStep.classList.remove('hidden');
+        otpStep.classList.add('hidden');
+        emailInput.value = '';
+        emailInput.focus();
+        otpInputs.forEach(input => input.value = '');
+        clearOtpTimer();
+      });
+
+      // ===== Timer Functions =====
+      function startOtpTimer() {
+        let timeLeft = OTP_EXPIRY;
+        const timerDisplay = document.getElementById('timer');
+        const timerText = document.getElementById('timerText');
+        
+        updateTimerDisplay(timeLeft, timerDisplay);
+        
+        otpTimer = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay(timeLeft, timerDisplay);
+
+          if (timeLeft <= 0) {
+            clearOtpTimer();
+            timerText.classList.add('hidden');
+            resendOtpBtn.classList.remove('hidden');
+          }
+        }, 1000);
+      }
+
+      function clearOtpTimer() {
+        if (otpTimer) clearInterval(otpTimer);
+      }
+
+      function updateTimerDisplay(seconds, element) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        element.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      // ===== Utility Functions =====
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      function showError(element, message) {
+        element.textContent = message;
+        element.classList.remove('hidden');
+      }
+
+      function showSuccess(message) {
+        // Show a toast or alert here
+        console.log('Success:', message);
+      }

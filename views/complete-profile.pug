@@ -1,0 +1,215 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+    
+    //- Header
+    .mb-12.text-center
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-user-check.mr-3.text-purple-600
+        | Complete Your Profile
+      p.text-gray-600 Let's gather more information to personalize your MBA prep journey.
+
+    .max-w-2xl.mx-auto.bg-white.p-8.rounded-lg.shadow-md
+
+      //- Progress Bar
+      .mb-8
+        .flex.justify-between.text-sm.font-semibold.text-gray-600.mb-2
+          span Step 1 of 3
+          span#progressPercent 33%
+        
+        .w-full.bg-gray-200.rounded-full.h-2
+          .bg-gradient-primary.h-2.rounded-full(style="width: 33%;")#progressBar
+
+      form#completeProfileForm.space-y-8
+
+        //- Step 1: Academic Details
+        .form-section#step1
+          
+          h3.text-xl.font-bold.text-gray-800.mb-6
+            i.fas.fa-graduation-cap.mr-2.text-purple-600
+            | Academic Details
+
+          .space-y-4
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="marks10th") 10th Marks (%)
+              input#marks10th.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                placeholder="e.g., 92.5"
+              )
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="marks12th") 12th Marks (%)
+              input#marks12th.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                placeholder="e.g., 88.0"
+              )
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="marksGrad") Graduation Marks (%)
+              input#marksGrad.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="number"
+                step="0.01"
+                min="0"
+                max="100"
+                placeholder="e.g., 75.5"
+              )
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="gstream") Graduation Stream
+              select#gstream.w-full.px-4.py-2.rounded-lg.border.border-gray-300
+                option(value="") -- Select Stream --
+                option(value="Engineering") Engineering
+                option(value="Commerce") Commerce
+                option(value="Arts") Arts
+                option(value="Science") Science
+                option(value="Other") Other
+
+          button#nextStep1.w-full.gradient-primary.text-white.py-3.rounded-lg.font-bold.mt-6(type="button")
+            | Next Step
+            i.fas.fa-arrow-right.ml-2
+
+        //- Step 2: Work Experience
+        .form-section#step2.hidden
+          
+          h3.text-xl.font-bold.text-gray-800.mb-6
+            i.fas.fa-briefcase.mr-2.text-blue-600
+            | Work Experience
+
+          .space-y-4
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="company") Current/Last Company
+              input#company.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="text"
+                placeholder="e.g., Tech Mahindra"
+              )
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="designation") Job Title/Designation
+              input#designation.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="text"
+                placeholder="e.g., Senior Software Engineer"
+              )
+
+            .form-group
+              label.block.text-gray-800.font-semibold.mb-2(for="experience") Total Experience (Months)
+              input#experience.w-full.px-4.py-2.rounded-lg.border.border-gray-300(
+                type="number"
+                min="0"
+                placeholder="e.g., 36"
+              )
+
+          .flex.gap-4.mt-6
+            button#backStep2.flex-1.border-2.border-gray-300.text-gray-700.py-3.rounded-lg.font-bold(type="button")
+              i.fas.fa-arrow-left.mr-2
+              | Back
+            
+            button#nextStep2.flex-1.gradient-primary.text-white.py-3.rounded-lg.font-bold(type="button")
+              | Next Step
+              i.fas.fa-arrow-right.ml-2
+
+        //- Step 3: Target Colleges
+        .form-section#step3.hidden
+          
+          h3.text-xl.font-bold.text-gray-800.mb-6
+            i.fas.fa-school.mr-2.text-green-600
+            | Target Colleges
+
+          p.text-gray-600.mb-6 Select up to 5 colleges you're targeting for your MBA.
+
+          .grid.grid-cols-1.sm_grid-cols-2.gap-4.mb-6
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="IIM-A")
+              span.ml-3.font-semibold IIM-A
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="IIM-B")
+              span.ml-3.font-semibold IIM-B
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="XLRI")
+              span.ml-3.font-semibold XLRI
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="FMS-Delhi")
+              span.ml-3.font-semibold FMS Delhi
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="ISB")
+              span.ml-3.font-semibold ISB
+
+            label.flex.items-center.p-3.border-2.border-gray-200.rounded-lg.cursor-pointer.hover_bg-green-50.transition
+              input.w-4.h-4.text-green-600(type="checkbox" name="colleges" value="JBIMS")
+              span.ml-3.font-semibold JBIMS
+
+          .flex.gap-4.mt-6
+            button#backStep3.flex-1.border-2.border-gray-300.text-gray-700.py-3.rounded-lg.font-bold(type="button")
+              i.fas.fa-arrow-left.mr-2
+              | Back
+            
+            button#submit.flex-1.gradient-primary.text-white.py-3.rounded-lg.font-bold(type="submit")
+              i.fas.fa-check.mr-2
+              | Complete Profile
+
+  script
+    :javascript
+      // Form Navigation
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const progressBar = document.getElementById('progressBar');
+      const progressPercent = document.getElementById('progressPercent');
+
+      let currentStep = 1;
+
+      function updateProgress() {
+        const percent = currentStep * 33;
+        progressBar.style.width = percent + '%';
+        progressPercent.textContent = percent + '%';
+      }
+
+      document.getElementById('nextStep1').addEventListener('click', () => {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        currentStep = 2;
+        updateProgress();
+      });
+
+      document.getElementById('nextStep2').addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+        currentStep = 3;
+        updateProgress();
+      });
+
+      document.getElementById('backStep2').addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step1.classList.remove('hidden');
+        currentStep = 1;
+        updateProgress();
+      });
+
+      document.getElementById('backStep3').addEventListener('click', () => {
+        step3.classList.add('hidden');
+        step2.classList.remove('hidden');
+        currentStep = 2;
+        updateProgress();
+      });
+
+      document.getElementById('completeProfileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log('Profile completed! Redirecting to dashboard...');
+        // API call to save profile
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 1000);
+      });

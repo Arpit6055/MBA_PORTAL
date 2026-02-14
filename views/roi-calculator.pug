@@ -1,0 +1,228 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+
+    //- Header
+    .mb-12.text-center
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-calculator.mr-3.text-green-600
+        | MBA ROI Calculator
+      p.text-gray-600.max-w-2xl.mx-auto
+        | Understand the financial impact of your MBA investment. Calculate 
+        | the true cost of studying and your breakeven timeline.
+
+    .grid.grid-cols-1.lg_grid-cols-2.gap-8
+
+      //- Input Form
+      .bg-white.p-8.rounded-lg.shadow-md
+
+        h3.text-2xl.font-bold.text-gray-800.mb-6
+          i.fas.fa-edit.mr-2.text-green-600
+          | Enter Your Details
+
+        form#roiForm.space-y-6
+
+          //- Current Salary
+          .form-group
+            label.block.text-gray-800.font-semibold.mb-2(for="currentSalary")
+              span Current Annual Salary (Pre-MBA)
+              span.text-red-500 *
+            .relative
+              span.absolute.left-4.top-3.text-gray-600 ₹
+              input#currentSalary.w-full.pl-8.pr-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-green-500(
+                type="number"
+                placeholder="e.g., 500000"
+                step="10000"
+                min="0"
+              )
+            p.text-xs.text-gray-500.mt-1 Your present annual salary
+
+          //- Tuition Fees
+          .form-group
+            label.block.text-gray-800.font-semibold.mb-2(for="tuitionFees")
+              span Total Tuition Fees
+              span.text-red-500 *
+            .relative
+              span.absolute.left-4.top-3.text-gray-600 ₹
+              input#tuitionFees.w-full.pl-8.pr-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-green-500(
+                type="number"
+                placeholder="e.g., 2000000"
+                step="10000"
+                min="0"
+              )
+            p.text-xs.text-gray-500.mt-1 Complete program fee
+
+          //- Loan Amount
+          .form-group
+            label.block.text-gray-800.font-semibold.mb-2(for="loanAmount")
+              span Education Loan Amount
+              span.text-red-500 *
+            .relative
+              span.absolute.left-4.top-3.text-gray-600 ₹
+              input#loanAmount.w-full.pl-8.pr-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-green-500(
+                type="number"
+                placeholder="e.g., 1500000"
+                step="10000"
+                min="0"
+              )
+            p.text-xs.text-gray-500.mt-1 Loan you'll take for MBA
+
+          //- Interest Rate
+          .form-group
+            label.block.text-gray-800.font-semibold.mb-2(for="interestRate")
+              span Loan Interest Rate (% per annum)
+              span.text-red-500 *
+            .relative
+              input#interestRate.w-full.px-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-green-500(
+                type="number"
+                placeholder="e.g., 8.5"
+                step="0.1"
+                min="0"
+              )
+              span.absolute.right-4.top-3.text-gray-600 %
+            p.text-xs.text-gray-500.mt-1 Current education loan rate
+
+          //- Post-MBA Salary (Estimate)
+          .form-group
+            label.block.text-gray-800.font-semibold.mb-2(for="postMbaSalary")
+              span Estimated Post-MBA Annual Salary
+              span.text-red-500 *
+            .relative
+              span.absolute.left-4.top-3.text-gray-600 ₹
+              input#postMbaSalary.w-full.pl-8.pr-4.py-2.rounded-lg.border.border-gray-300.focus_outline-none.focus_border-green-500(
+                type="number"
+                placeholder="e.g., 1500000"
+                step="10000"
+                min="0"
+              )
+            p.text-xs.text-gray-500.mt-1 Expected salary after MBA completion
+
+          //- Calculate Button
+          button#calculateBtn.w-full.gradient-primary.text-white.py-3.rounded-lg.font-bold.hover_opacity-90.transition(
+            type="button"
+          )
+            i.fas.fa-calculator.mr-2
+            | Calculate ROI
+
+      //- Results Display
+      .bg-gradient-to-br.from-green-50.to-emerald-50.p-8.rounded-lg.shadow-md.border-l-4.border-green-600#resultContainer.hidden
+
+        h3.text-2xl.font-bold.text-gray-800.mb-6
+          i.fas.fa-chart-line.mr-2.text-green-600
+          | Your ROI Analysis
+
+        .space-y-6
+
+          //- Opportunity Cost
+          .bg-white.p-4.rounded.border-l-4.border-orange-500
+            p.text-sm.text-gray-600 Opportunity Cost (2 Years of Salary Lost)
+            p.text-3xl.font-bold.text-orange-600#opportunityCost ₹0
+
+          //- Total Investment
+          .bg-white.p-4.rounded.border-l-4.border-red-500
+            p.text-sm.text-gray-600 Total Investment (Fees + Opportunity + Interest)
+            p.text-3xl.font-bold.text-red-600#totalInvestment ₹0
+
+          //- Annual Salary Increase
+          .bg-white.p-4.rounded.border-l-4.border-blue-500
+            p.text-sm.text-gray-600 Annual Salary Increase
+            p.text-3xl.font-bold.text-blue-600#annualIncrease ₹0
+
+          //- Breakeven Timeline
+          .bg-white.p-4.rounded.border-l-4.border-green-500
+            p.text-sm.text-gray-600 Breakeven Timeline
+            p.text-3xl.font-bold.text-green-600#breakeven 0 years
+            p.text-xs.text-gray-600.mt-2 Time to recover your total MBA investment
+
+          //- ROI Percentage
+          .bg-white.p-4.rounded.border-l-4.border-purple-500
+            p.text-sm.text-gray-600 Return on Investment (5 Year ROI)
+            p.text-3xl.font-bold.text-purple-600#roiPercent 0%
+
+        //- Disclaimer
+        .bg-yellow-50.border-l-4.border-yellow-500.p-4.rounded.mt-6
+          p.text-xs.text-yellow-800
+            strong ⚠️ Disclaimer: | This is an estimation based on your inputs. 
+            | Actual salary growth, market conditions, and personal factors may vary. 
+            | Please consult with career counselors for detailed financial planning.
+
+    //- Information Section
+    .mt-16.grid.grid-cols-1.md_grid-cols-3.gap-8
+
+      .bg-white.p-6.rounded-lg.shadow-md
+        h4.text-lg.font-bold.text-gray-800.mb-4
+          i.fas.fa-lightbulb.mr-2.text-yellow-500
+          | How It Works
+        p.text-gray-600.text-sm
+          strong Opportunity Cost | Your salary for 2 years of MBA duration
+          br.my-2
+          strong Total Investment | Sum of fees, opportunity cost, and loan interest
+          br.my-2
+          strong Breakeven | Years needed to recover investment through salary increase
+
+      .bg-white.p-6.rounded-lg.shadow-md
+        h4.text-lg.font-bold.text-gray-800.mb-4
+          i.fas.fa-trending-up.mr-2.text-green-500
+          | Average MBA Returns
+        ul.text-gray-600.text-sm.space-y-2
+          li
+            strong IIM/XLRI: | 3-5 years breakeven
+          li
+            strong Tier-2 B-Schools: | 5-7 years breakeven
+          li
+            strong Corporate Roles: | 2-3 years breakeven
+          li
+            strong Avg Salary Hike: | 100% - 150%
+
+      .bg-white.p-6.rounded-lg.shadow-md
+        h4.text-lg.font-bold.text-gray-800.mb-4
+          i.fas.fa-graduation-cap.mr-2.text-blue-500
+          | Tips for Better ROI
+        ul.text-gray-600.text-sm.space-y-2
+          li ✓ Choose colleges with strong placements
+          li ✓ Leverage internships for skill building
+          li ✓ Network extensively during MBA
+          li ✓ Consider location for job opportunities
+          li ✓ Explore scholarship & financial aid
+
+  script
+    :javascript
+      const calculateBtn = document.getElementById('calculateBtn');
+      const resultContainer = document.getElementById('resultContainer');
+
+      calculateBtn.addEventListener('click', () => {
+        const currentSalary = parseFloat(document.getElementById('currentSalary').value);
+        const tuitionFees = parseFloat(document.getElementById('tuitionFees').value);
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+        const interestRate = parseFloat(document.getElementById('interestRate').value);
+        const postMbaSalary = parseFloat(document.getElementById('postMbaSalary').value);
+
+        if (!currentSalary || !tuitionFees || !loanAmount || !interestRate || !postMbaSalary) {
+          alert('Please fill in all required fields');
+          return;
+        }
+
+        // Calculations
+        const opportunityCost = currentSalary * 2; // 2-year MBA program
+        const yearlyInterest = (loanAmount * interestRate / 100);
+        const totalInterest = yearlyInterest * 5; // Assuming 5-year loan repayment
+        const totalInvestment = tuitionFees + opportunityCost + totalInterest;
+        const annualIncrease = postMbaSalary - currentSalary;
+        const breakeven = Math.ceil(totalInvestment / annualIncrease);
+        const fiveYearSalary = (postMbaSalary * 5) - (currentSalary * 5);
+        const roiPercent = Math.round((fiveYearSalary - totalInvestment) / totalInvestment * 100);
+
+        // Display results
+        document.getElementById('opportunityCost').textContent = formatCurrency(opportunityCost);
+        document.getElementById('totalInvestment').textContent = formatCurrency(totalInvestment);
+        document.getElementById('annualIncrease').textContent = formatCurrency(annualIncrease);
+        document.getElementById('breakeven').textContent = breakeven + ' years';
+        document.getElementById('roiPercent').textContent = roiPercent + '%';
+
+        resultContainer.classList.remove('hidden');
+      });
+
+      function formatCurrency(value) {
+        return '₹' + value.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+      }
