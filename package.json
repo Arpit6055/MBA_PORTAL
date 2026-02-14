@@ -6,8 +6,18 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "stop": "pkill -f 'node app.js' || echo 'Server not running'",
+    "restart": "npm stop && npm start",
     "init-db": "node scripts/init-db.js",
-    "test-setup": "node scripts/test-setup.js"
+    "reset-db": "node scripts/reset-db.js",
+    "test-setup": "node scripts/test-setup.js",
+    "scrape": "node scripts/run-scraper.js",
+    "scrape:reddit": "node scripts/scrape-reddit.js",
+    "scrape:news": "node scripts/scrape-news.js",
+    "scrape:dedup": "node scripts/dedup.js",
+    "test": "node scripts/test-api.js",
+    "test-api": "node scripts/test-api.js",
+    "health": "curl http://localhost:3000/admin/scraper-status"
   },
   "keywords": [
     "MBA",
@@ -19,15 +29,30 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.6.0",
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0",
+    "compromise": "^14.0.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.0.0",
     "express-session": "^1.17.3",
+    "fuzzyset.js": "^1.0.9",
+    "helmet": "^7.0.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.8.1",
+    "node-cron": "^3.0.0",
     "nodemailer": "^8.0.1",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "puppeteer": "^20.0.0",
+    "validator": "^13.9.0",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

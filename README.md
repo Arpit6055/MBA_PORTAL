@@ -1,53 +1,108 @@
-# MBA Aspirant Prep Portal
+# MBA Aspirant Portal
 
-## 📚 Project Overview
-
-A comprehensive web application designed for MBA aspirants to prepare for Group Discussions (GD) and Personal Interviews (PI), calculate ROI, and access interview experiences from successful candidates across top B-schools.
-
-**Tech Stack:**
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Template Engine:** Pug (Jade)
-- **Database:** MongoDB (Cloud Atlas)
-- **Architecture:** MVC (Model-View-Controller)
-- **Email:** Nodemailer (SMTP)
-- **Styling:** TailwindCSS + Custom CSS
-- **Authentication:** OTP-based login (No passwords)
+**A comprehensive platform for MBA aspirants: GD/PI war room, interview experiences, ROI calculator, and college intelligence.**
 
 ---
 
-## 🎯 Core Features
+## 🚀 Quick Start
 
-### 1. **OTP-Based Authentication**
-- Secure email-based login with 6-digit OTP
-- 10-minute expiry for OTP codes
-- Rate limiting (Max 3 OTPs per 15 minutes)
-- Automatic user creation on first login
-- Session management with HTTP-only cookies
+### Option 1: Automated Setup (Recommended)
 
-### 2. **User Profile - "MBA Resumé"**
-- **Academic Profile (9/9/9 Format):**
-  - 10th, 12th, and Graduation marks converted to 9-point scale
-  - Graduation stream information
-  - Visual badge display on profile
-  
-- **Work Experience:**
-  - Current company and designation
-  - Total months of experience
-  - Expandable for multiple work experiences
+```bash
+# Windows (PowerShell)
+.\setup\setup.ps1
 
-- **Target Colleges:**
-  - Multi-select from top B-schools (IIM-A, XLRI, FMS, etc.)
-  - Up to 5 selections
+# Mac/Linux (Bash)
+bash setup/setup.sh
+```
 
-### 3. **GD/PI War Room**
-- Curated group discussion topics database
-- Topics include:
-  - Title and category (Abstract/Current Affairs/Economics)
-  - Context/summary
-  - For Arguments (JSON array)
-  - Against Arguments (JSON array)
-  - Data Points and key statistics
+Interactive menu guides you through everything.
+
+### Option 2: Manual Setup
+
+```bash
+npm install
+npm run init-db
+npm start
+```
+
+Visit: http://localhost:3000
+
+---
+
+## 📚 Documentation
+
+**All documentation is in the `/docs` folder.**
+
+| Need | Read |
+|------|------|
+| Quick setup (5 min) | [docs/guides/START_HERE.md](docs/guides/START_HERE.md) |
+| Environment setup | [docs/guides/SETUP_ENV.md](docs/guides/SETUP_ENV.md) |
+| All commands | [docs/guides/QUICK_START.md](docs/guides/QUICK_START.md) |
+| Security guide | [docs/security/SECURITY.md](docs/security/SECURITY.md) |
+| Architecture | [docs/architecture/ARCHITECTURE_REDESIGN.md](docs/architecture/ARCHITECTURE_REDESIGN.md) |
+| Database schema | [docs/architecture/DATABASE_SCHEMAS.md](docs/architecture/DATABASE_SCHEMAS.md) |
+| API endpoints | [docs/api/API_ROUTES.md](docs/api/API_ROUTES.md) |
+| Which doc to read? | [docs/guides/DOCS_GUIDE.md](docs/guides/DOCS_GUIDE.md) |
+
+---
+
+## 📂 Folder Structure
+
+```
+/docs                 - All documentation
+  /security          - Security guides & .env template
+  /guides            - Quick start & daily reference
+  /architecture      - System design documents
+  /api               - API specification
+
+/setup                - Automated setup scripts
+  setup.ps1          - Windows PowerShell setup
+  setup.sh           - Mac/Linux Bash setup
+  setup-security.ps1 - Security-only setup
+  README.md          - Setup instructions
+
+/config              - Configuration files
+/controllers         - Route handlers
+/models              - Database models
+/routes              - API routes
+/scripts             - Utility scripts
+/views               - Pug templates
+/public              - Static files (CSS, JS)
+```
+
+---
+
+## 🔒 Security First
+
+All secrets go in `.env` (not in code). Create it from template:
+
+```bash
+cp docs/security/.env.example .env
+# Edit .env and add your secrets
+```
+
+See [docs/security/SECURITY.md](docs/security/SECURITY.md) for complete security guide.
+
+---
+
+## 📖 For Developers
+
+- **Backend Dev?** → Read [docs/architecture/DATABASE_SCHEMAS.md](docs/architecture/DATABASE_SCHEMAS.md) & [docs/api/API_ROUTES.md](docs/api/API_ROUTES.md)
+- **Scraper Dev?** → Read [docs/architecture/SCRAPER_ARCHITECTURE.md](docs/architecture/SCRAPER_ARCHITECTURE.md)
+- **Frontend Dev?** → Read [docs/api/API_ROUTES.md](docs/api/API_ROUTES.md)
+- **DevOps/Ops?** → Read [docs/security/PRODUCTION_CHECKLIST.md](docs/security/PRODUCTION_CHECKLIST.md)
+
+---
+
+## 🆘 Confused?
+
+→ Check [docs/guides/DOCS_GUIDE.md](docs/guides/DOCS_GUIDE.md) - it tells you which doc to read based on your role.
+
+---
+
+**Status:** Production ready | **Last Updated:** Feb 14, 2026
+
   - Star ratings and bookmark functionality
 
 ### 4. **Interview Experiences**
