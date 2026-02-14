@@ -14,13 +14,19 @@ const createTransporter = () => {
   // For Gmail: Use App Password (https://myaccount.google.com/apppasswords)
   // For other providers: Use corresponding SMTP credentials
   
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASSWORD;
+  
+  console.log('[Email Config] SMTP_USER:', user ? '***' : 'NOT SET');
+  console.log('[Email Config] SMTP_PASSWORD:', pass ? '***' : 'NOT SET');
+  
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: process.env.SMTP_PORT || 587,
     secure: false, // Use TLS (true for 465, false for 587)
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
+      user: user,
+      pass: pass,
     },
   });
 };
@@ -34,7 +40,7 @@ const sendOTPEmail = async (email, otpCode) => {
   const transporter = createTransporter();
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: process.env.SMTP_FROM_EMAIL,
     to: email,
     subject: 'Your MBA Portal Login OTP',
     html: `
@@ -104,7 +110,7 @@ const sendWelcomeEmail = async (email, userName = 'User') => {
   const transporter = createTransporter();
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: process.env.SMTP_FROM_EMAIL,
     to: email,
     subject: 'Welcome to MBA Aspirant Portal! 🎓',
     html: `

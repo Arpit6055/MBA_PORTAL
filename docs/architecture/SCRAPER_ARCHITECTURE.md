@@ -1,5 +1,12 @@
 # Scraper Architecture & Implementation Guide
 
+> **📢 UPDATE:** An advanced version of the scrapers is now available! See [ADVANCED_SCRAPER_GUIDE.md](../ADVANCED_SCRAPER_GUIDE.md) and [IMPROVEMENT_SUMMARY.md](../IMPROVEMENT_SUMMARY.md) for:
+> - 15+ news sources (vs 3 original)
+> - 13 targeted subreddits (vs 3 original)
+> - Controversy detection engine ⚠️
+> - 8-category content classification
+> - Run with: `npm run scrape:all-advanced`
+
 ## Overview
 Real-time content aggregation system to keep the MBA news feed fresh. This is the ENGINE of the new platform.
 

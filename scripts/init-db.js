@@ -73,6 +73,22 @@ async function initializeDatabase() {
           expire: {},
         },
       },
+      {
+        name: 'colleges',
+        indexes: {
+          name: { unique: true },
+          aliases: {},
+        },
+      },
+      {
+        name: 'news_articles',
+        indexes: {
+          'source.url': { unique: true },
+          college_names: {},
+          published_at: {},
+          created_at: {},
+        },
+      },
     ];
 
     // Create each collection
@@ -85,6 +101,11 @@ async function initializeDatabase() {
     collections.forEach(col => {
       console.log(`   ✓ ${col.name}`);
     });
+
+    // Seed colleges data
+    console.log('\n🎓 Seeding colleges data...');
+    const CollegeModel = require('../models/CollegeModel');
+    await CollegeModel.seedColleges();
 
     process.exit(0);
   } catch (err) {

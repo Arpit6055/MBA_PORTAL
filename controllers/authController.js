@@ -127,7 +127,7 @@ const verifyOTP = async (req, res) => {
         message: 'OTP verified successfully. Logging you in...',
         userId: user._id || user.id,
         profileComplete: user.profile_complete,
-        redirectUrl: user.profile_complete ? '/dashboard' : '/complete-profile',
+        redirectUrl: '/news',
       });
     });
   } catch (error) {
@@ -299,7 +299,7 @@ const completeProfile = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Profile completed successfully!',
-      redirectUrl: '/dashboard',
+      redirectUrl: '/news',
     });
   } catch (error) {
     console.error('Error completing profile:', error);

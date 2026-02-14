@@ -6,6 +6,7 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const { MongoStore } = require('connect-mongo');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
@@ -31,11 +32,17 @@ app.use(
   session({
     secret: process.env.SECRET_KEY || 'mba_portal_secret_2024',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false, // Don't save session if unmodified
+    store: new MongoStore({
+      mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/mba_portal',
+      collectionName: 'sessions',
+      ttl: 24 * 60 * 60, // 1 day
+      autoRemove: 'native', // Recommended
+    }),
     cookie: {
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite: 'Lax', // Allow credentials in cross-site requests
+      sameSite: 'Lax',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
@@ -65,44 +72,75 @@ app.use((req, res, next) => {
 
 // Import route files
 const authRoutes = require('./routes/authRoutes');
+const UserModel = require('./models/UserModel');
+const NewsArticleModel = require('./models/NewsArticleModel');
+const CollegeModel = require('./models/CollegeModel');
 
 // Register routes
 app.use('/api/auth', authRoutes);
 
 // Home page
-app.get('/', (req, res) => {
-  if (req.session.userId) {
-    return res.redirect('/dashboard');
+app.get('/', async (req, res) => {
+  try {
+    const recentNews = await NewsArticleModel.getRecent(6);
+    const colleges = await CollegeModel.findAll();
+    res.render('index', { 
+      title: 'MBA Aspirant Portal',
+      articles: recentNews,
+      colleges: colleges
+    });
+  } catch (err) {
+    console.error('Error loading home:', err);
+    res.render('index', { 
+      title: 'MBA Aspirant Portal',
+      articles: [],
+      colleges: []
+    });
   }
-  res.render('index', { title: 'MBA Aspirant Portal' });
 });
 
 // Login page
 app.get('/login', (req, res) => {
   if (req.session.userId) {
-    return res.redirect('/dashboard');
+    return res.redirect('/news');
   }
   res.render('login', { title: 'Login - MBA Portal' });
 });
 
 // Dashboard (Protected)
 app.get('/dashboard', (req, res) => {
-  console.log('Dashboard access - Session userId:', req.session.userId);
+  res.redirect('/news');
+});
+
+// News page (Protected)
+app.get('/news', async (req, res) => {
   if (!req.session.userId) {
-    console.log('✗ Redirecting to login - No session');
     return res.redirect('/login');
   }
-  console.log('✓ Dashboard access granted for:', req.session.email);
-  res.render('dashboard', { title: 'Dashboard - MBA Portal' });
+  
+  const articles = await NewsArticleModel.getRecent(100);
+  const colleges = await CollegeModel.findAll();
+  
+  res.render('news', { 
+    title: 'News - MBA Portal',
+    articles,
+    colleges,
+  });
 });
 
 // Profile page (Protected)
-app.get('/profile', (req, res) => {
+app.get('/profile', async (req, res) => {
   console.log('Profile access - Session userId:', req.session.userId);
   if (!req.session.userId) {
     console.log('✗ Redirecting to login - No session');
     return res.redirect('/login');
   }
+  
+  const user = await UserModel.findById(req.session.userId);
+  if (user && !user.profile_complete) {
+    return res.render('complete-profile', { title: 'Complete Your Profile - MBA Portal' });
+  }
+  
   res.render('profile', { title: 'My Profile - MBA Portal' });
 });
 
@@ -129,6 +167,37 @@ app.get('/experiences', (req, res) => {
 // ROI Calculator
 app.get('/roi-calculator', (req, res) => {
   res.render('roi-calculator', { title: 'ROI Calculator - MBA Portal' });
+});
+
+// Colleges & Universities (with placement, cutoff, fees data)
+app.get('/colleges', async (req, res) => {
+  const colleges = await CollegeModel.findAll();
+  res.render('colleges', { 
+    title: 'MBA Colleges & Universities - Placement & Fee Data',
+    colleges,
+  });
+});
+
+// College Details API
+app.get('/api/colleges', async (req, res) => {
+  try {
+    const colleges = await CollegeModel.findAll();
+    res.json({ success: true, data: colleges });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/colleges/:name', async (req, res) => {
+  try {
+    const college = await CollegeModel.findByName(req.params.name);
+    if (!college) {
+      return res.status(404).json({ success: false, error: 'College not found' });
+    }
+    res.json({ success: true, data: college });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // ======================

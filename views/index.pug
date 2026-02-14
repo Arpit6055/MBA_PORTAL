@@ -5,144 +5,236 @@ block content
   .gradient-primary.text-white.py-20
     .container.mx-auto.px-4
       .max-w-3xl.mx-auto.text-center
-        h2.text-5xl.font-bold.mb-6
+        h2.text-6xl.font-bold.mb-6
           i.fas.fa-rocket.mr-3
           | Your MBA Journey Starts Here
         
         p.text-xl.text-purple-100.mb-8
-          | Master group discussions, crack personal interviews, calculate your ROI, 
+          | Master group discussions, crack personal interviews, explore top colleges, 
           | and learn from successful MBA aspirants.
         
-        if !isAuthenticated
-          .space-x-4
+        .space-x-4
+          if !isAuthenticated
             a.inline-block.bg-white.text-purple-600.px-8.py-3.rounded-lg.font-bold.hover_shadow-lg.transition(
               href="/login"
             )
               i.fas.fa-sign-in-alt.mr-2
-              | Login with OTP
+              | Get Started Free
             
             a.inline-block.border-2.border-white.text-white.px-8.py-3.rounded-lg.font-bold.hover_bg-white.hover_text-purple-600.transition(
-              href="#features"
+              href="#news"
             )
               i.fas.fa-arrow-down.mr-2
-              | Explore Features
+              | Latest News
+          else
+            a.inline-block.bg-white.text-purple-600.px-8.py-3.rounded-lg.font-bold.hover_shadow-lg.transition(
+              href="/dashboard"
+            )
+              i.fas.fa-tachometer-alt.mr-2
+              | Go to Dashboard
+
+  //- Latest News Section
+  .py-20.bg-gray-50#news
+    .container.mx-auto.px-4
+      .text-center.mb-12
+        h3.text-4xl.font-bold.mb-4.gradient-text
+          | Latest MBA News & Updates
+        p.text-gray-600.text-lg
+          | Stay updated with placements, admissions, and college news
+      
+      if articles && articles.length > 0
+        .grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-3.gap-8
+          each article in articles
+            .bg-white.rounded-lg.shadow-md.hover_shadow-lg.transition.overflow-hidden
+              .p-6
+                .flex.items-center.justify-between.mb-3
+                  span.text-xs.bg-purple-100.text-purple-700.font-bold.px-3.py-1.rounded-full
+                    = article.source.name
+                  span.text-xs.text-gray-500
+                    = new Date(article.published_at).toLocaleDateString()
+                
+                h3.text-lg.font-bold.text-gray-800.mb-3
+                  = article.title
+                
+                p.text-gray-600.text-sm.mb-4
+                  = article.summary
+                
+                if article.college_names && article.college_names.length > 0
+                  .flex.flex-wrap.gap-2.mb-4
+                    each name in article.college_names
+                      span.bg-blue-100.text-blue-700.text-xs.font-semibold.px-2.py-1.rounded
+                        i.fas.fa-school.mr-1
+                        = name
+                
+                a.block.text-center.bg-gray-100.hover_bg-purple-600.hover_text-white.text-gray-700.py-2.rounded-md.transition.font-semibold(
+                  href=article.source.url
+                  target="_blank"
+                  rel="noopener noreferrer"
+                )
+                  i.fas.fa-external-link-alt.mr-2
+                  | Read Article
+      else
+        .text-center.py-12
+          p.text-gray-600 Loading latest news...
 
   //- Features Section
-  .py-20#features
+  .py-20
     .container.mx-auto.px-4
       h3.text-4xl.font-bold.text-center.mb-16.gradient-text
         | Everything You Need to Ace MBA Interviews
 
       .grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-3.gap-8
         
-        //- Feature 1: GD/PI War Room
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-purple-600
+        //- Feature 1: Colleges & Data
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-purple-600
           .text-4xl.text-purple-600.mb-4
+            i.fas.fa-school
+          h4.text-2xl.font-bold.text-gray-800.mb-4 College Insights
+          p.text-gray-600.mb-4
+            | Explore top MBA colleges with official placement data, CAT cutoffs, 
+            | fees, and salary insights.
+          a.text-purple-600.font-semibold.hover_underline(href="/colleges")
+            | Explore Colleges
+            i.fas.fa-arrow-right.ml-2
+
+        //- Feature 2: GD/PI War Room
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-blue-600
+          .text-4xl.text-blue-600.mb-4
             i.fas.fa-users
           h4.text-2xl.font-bold.text-gray-800.mb-4 GD/PI War Room
           p.text-gray-600.mb-4
-            | Access curated group discussion topics with balanced arguments, 
-            | data points, and real insights.
-          a.text-purple-600.font-semibold.hover_underline(href="/gd-war-room")
+            | Access curated group discussion topics with balanced arguments 
+            | and data points.
+          a.text-blue-600.font-semibold.hover_underline(href="/gd-war-room")
             | Explore Topics
             i.fas.fa-arrow-right.ml-2
 
-        //- Feature 2: Interview Experiences
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-blue-600
-          .text-4xl.text-blue-600.mb-4
+        //- Feature 3: Interview Experiences
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-green-600
+          .text-4xl.text-green-600.mb-4
             i.fas.fa-book
           h4.text-2xl.font-bold.text-gray-800.mb-4 Real Experiences
           p.text-gray-600.mb-4
             | Read authentic interview stories from successful candidates 
             | across top B-schools.
-          a.text-blue-600.font-semibold.hover_underline(href="/experiences")
+          a.text-green-600.font-semibold.hover_underline(href="/experiences")
             | Read Stories
             i.fas.fa-arrow-right.ml-2
 
-        //- Feature 3: ROI Calculator
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-green-600
-          .text-4xl.text-green-600.mb-4
+        //- Feature 4: ROI Calculator
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-yellow-600
+          .text-4xl.text-yellow-600.mb-4
             i.fas.fa-calculator
           h4.text-2xl.font-bold.text-gray-800.mb-4 ROI Calculator
           p.text-gray-600.mb-4
             | Calculate your MBA's return on investment with fees, 
-            | opportunity cost, and salary growth.
-          a.text-green-600.font-semibold.hover_underline(href="/roi-calculator")
+            | opportunity cost, and salary projections.
+          a.text-yellow-600.font-semibold.hover_underline(href="/roi-calculator")
             | Calculate ROI
             i.fas.fa-arrow-right.ml-2
 
-        //- Feature 4: Academic Profile
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-yellow-600
-          .text-4xl.text-yellow-600.mb-4
+        //- Feature 5: Profile Builder
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-red-600
+          .text-4xl.text-red-600.mb-4
             i.fas.fa-chart-line
-          h4.text-2xl.font-bold.text-gray-800.mb-4 Academic Profile
+          h4.text-2xl.font-bold.text-gray-800.mb-4 Profile Builder
           p.text-gray-600.mb-4
             | Build your professional MBA résumé with academics, 
             | work experience, and target colleges.
-          a.text-yellow-600.font-semibold.hover_underline(href="/profile")
-            | Build Profile
-            i.fas.fa-arrow-right.ml-2
+          if isAuthenticated
+            a.text-red-600.font-semibold.hover_underline(href="/profile")
+              | Build Profile
+              i.fas.fa-arrow-right.ml-2
+          else
+            a.text-red-600.font-semibold.hover_underline(href="/login")
+              | Get Started
+              i.fas.fa-arrow-right.ml-2
 
-        //- Feature 5: Community
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-red-600
-          .text-4xl.text-red-600.mb-4
+        //- Feature 6: Community
+        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-t-4.border-indigo-600
+          .text-4xl.text-indigo-600.mb-4
             i.fas.fa-comments
           h4.text-2xl.font-bold.text-gray-800.mb-4 Community
           p.text-gray-600.mb-4
             | Network with fellow MBA aspirants, share experiences, 
             | and grow together.
-          a.text-red-600.font-semibold.hover_underline(href="#community")
+          a.text-indigo-600.font-semibold.hover_underline(href="#community")
             | Join Community
             i.fas.fa-arrow-right.ml-2
 
-        //- Feature 6: Resources
-        .bg-white.p-8.rounded-lg.shadow-lg.hover_shadow-2xl.transition.border-l-4.border-indigo-600
-          .text-4xl.text-indigo-600.mb-4
-            i.fas.fa-library
-          h4.text-2xl.font-bold.text-gray-800.mb-4 Learning Resources
-          p.text-gray-600.mb-4
-            | Access curated articles, videos, and case studies 
-            | for comprehensive MBA prep.
-          a.text-indigo-600.font-semibold.hover_underline(href="#resources")
-            | Browse Resources
-            i.fas.fa-arrow-right.ml-2
+  //- Colleges Showcase
+  .py-20.bg-gray-50
+    .container.mx-auto.px-4
+      .text-center.mb-12
+        h3.text-4xl.font-bold.mb-4.gradient-text
+          | Top MBA Colleges in India
+        p.text-gray-600.text-lg
+          | Explore official placement data and admission criteria
 
-  //- CTA Section
-  .bg-gradient-to-r.from-purple-600.to-blue-600.text-white.py-16
-    .container.mx-auto.px-4.text-center
-      h3.text-4xl.font-bold.mb-4 Ready to Transform Your MBA Journey?
-      p.text-xl.text-purple-100.mb-8 Join hundreds of successful MBA aspirants using our platform
-      
-      if !isAuthenticated
-        a.inline-block.bg-white.text-purple-600.px-10.py-4.rounded-lg.font-bold.text-lg.hover_shadow-lg.transition(
-          href="/login"
-        )
-          i.fas.fa-envelope.mr-2
-          | Get Started with OTP Login
-      else
-        a.inline-block.bg-white.text-purple-600.px-10.py-4.rounded-lg.font-bold.text-lg.hover_shadow-lg.transition(
-          href="/dashboard"
-        )
-          i.fas.fa-tachometer-alt.mr-2
-          | Go to Dashboard
+      .grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-4.gap-6
+        each college in colleges.slice(0, 8)
+          .bg-white.rounded-lg.p-4.shadow-md.hover_shadow-lg.transition.text-center.border-l-4.border-purple-600
+            h4.font-bold.text-gray-800.mb-2= college.name
+            p.text-xs.text-gray-600.mb-3
+              i.fas.fa-map-marker-alt.mr-1
+              = college.location || 'Location TBA'
+            
+            if college.placement && college.placement.average_package
+              .bg-purple-50.p-3.rounded.mb-3
+                p.text-xs.text-gray-600 Avg Package
+                p.text-lg.font-bold.text-purple-600
+                  = (college.placement.average_package / 100000).toFixed(1)
+                  | L
+            else
+              .bg-gray-100.p-3.rounded.mb-3
+                p.text-xs.text-gray-600 Data Loading...
+            
+            a.text-purple-600.text-sm.font-semibold.hover_underline(href="/colleges")
+              i.fas.fa-info-circle.mr-1
+              | View Details
+
+      .text-center.mt-8
+        a.inline-block.gradient-primary.text-white.px-8.py-3.rounded-lg.font-bold.hover_opacity-90.transition(href="/colleges")
+          i.fas.fa-graduation-cap.mr-2
+          | Explore All 63 Colleges
 
   //- Stats Section
-  .py-20.bg-gray-50
+  .py-20.bg-gradient-to-r.from-purple-600.to-blue-600.text-white
     .container.mx-auto.px-4
       .grid.grid-cols-1.md_grid-cols-4.gap-8.text-center
         
         .stat-card
-          .text-4xl.font-bold.gradient-text 500+
-          p.text-gray-600.mt-2 Active Users
+          .text-5xl.font-bold 63+
+          p.text-purple-100.mt-2 MBA Colleges
         
         .stat-card
-          .text-4xl.font-bold.gradient-text 50+
-          p.text-gray-600.mt-2 GD Topics
+          .text-5xl.font-bold 50+
+          p.text-purple-100.mt-2 GD Topics
         
         .stat-card
-          .text-4xl.font-bold.gradient-text 200+
-          p.text-gray-600.mt-2 Experiences
+          .text-5xl.font-bold 200+
+          p.text-purple-100.mt-2 Experiences
         
         .stat-card
-          .text-4xl.font-bold.gradient-text 95%
-          p.text-gray-600.mt-2 Success Rate
+          .text-5xl.font-bold 95%
+          p.text-purple-100.mt-2 Success Rate
+
+  //- CTA Section
+  .bg-white.py-20
+    .container.mx-auto.px-4.text-center
+      h3.text-4xl.font-bold.mb-4.gradient-text
+        | Ready to Transform Your MBA Journey?
+      p.text-xl.text-gray-600.mb-8
+        | Join thousands of MBA aspirants preparing for their dream colleges
+      
+      if !isAuthenticated
+        a.inline-block.gradient-primary.text-white.px-10.py-4.rounded-lg.font-bold.text-lg.hover_shadow-lg.transition(
+          href="/login"
+        )
+          i.fas.fa-envelope.mr-2
+          | Get Started with OTP Login - Free!
+      else
+        p.text-gray-600
+          | You're all set! 
+          a.text-purple-600.font-bold.hover_underline(href="/dashboard") Go to dashboard
+

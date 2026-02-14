@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-8
+    .flex.justify-between.items-center.mb-6
+      h1.text-3xl.font-bold.gradient-text MBA News & Updates
+      
+      //- College Filter
+      div
+        label.text-gray-600.mr-2(for="college-filter") Filter by College:
+        select#college-filter.p-2.border.rounded-md
+          option(value="all") All Colleges
+          each college in colleges
+            option(value=college.name)= college.name
+
+    //- News Articles
+    .grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-3.gap-8
+      each article in articles
+        .news-article.bg-white.rounded-lg.shadow-md.overflow-hidden(data-colleges=article.college_names ? article.college_names.join(',') : '')
+          .p-6
+            h2.text-xl.font-bold.mb-2= article.title
+            p.text-gray-700.text-sm.mb-4= article.summary
+            
+            .flex.items-center.justify-between.text-xs.text-gray-500.mb-4
+              span.font-semibold= article.source.name
+              span= new Date(article.published_at).toLocaleDateString()
+
+            if article.college_names && article.college_names.length > 0
+              .flex.flex-wrap.gap-2
+                each name in article.college_names
+                  span.bg-purple-100.text-purple-700.text-xs.font-semibold.px-2.py-1.rounded-full= name
+
+            a.block.text-center.w-full.bg-gray-100.hover_bg-gray-200.text-gray-700.py-2.rounded-md.mt-4(href=article.source.url, target="_blank", rel="noopener noreferrer") Read Full Article
+            
+  script.
+    // Client-side filtering
+    const filter = document.getElementById('college-filter');
+    const articles = document.querySelectorAll('.news-article');
+
+    filter.addEventListener('change', () => {
+      const selectedCollege = filter.value;
+
+      articles.forEach(article => {
+        const mentionedColleges = article.dataset.colleges.split(',');
+
+        if (selectedCollege === 'all' || mentionedColleges.includes(selectedCollege)) {
+          article.style.display = 'block';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });

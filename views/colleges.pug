@@ -1,0 +1,417 @@
+extends layout
+
+block content
+  .container.mx-auto.px-4.py-12
+
+    //- Header
+    .mb-12
+      h2.text-4xl.font-bold.text-gray-800.mb-2
+        i.fas.fa-school.mr-3.text-purple-600
+        | MBA Colleges & Universities
+      p.text-gray-600 Official placement, admission & fees data for top MBA programs in India
+
+    //- Filters & Search
+    .bg-white.p-6.rounded-lg.shadow-md.mb-8
+      .grid.grid-cols-1.md_grid-cols-4.gap-4
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Tier
+          select.w-full.px-4.py-2.rounded-lg.border.border-gray-300#tierFilter
+            option(value="") All Tiers
+            option(value="1") Tier 1 (Top)
+            option(value="2") Tier 2 (Mid)
+            option(value="3") Tier 3 (Notable)
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Min. Avg Package
+          select.w-full.px-4.py-2.rounded-lg.border.border-gray-300#packageFilter
+            option(value="") Any
+            option(value="2000000") 20 LPA+
+            option(value="1800000") 18 LPA+
+            option(value="1600000") 16 LPA+
+            option(value="1400000") 14 LPA+
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Location
+          select.w-full.px-4.py-2.rounded-lg.border.border-gray-300#locationFilter
+            option(value="") All Locations
+            option(value="Delhi") Delhi & NCR
+            option(value="Mumbai") Mumbai
+            option(value="Bangalore") Bangalore
+            option(value="Pune") Pune
+        
+        .form-group
+          label.block.text-sm.font-semibold.text-gray-700.mb-2 Search
+          input.w-full.px-4.py-2.rounded-lg.border.border-gray-300#collegeSearch(
+            type="text"
+            placeholder="Search colleges..."
+          )
+
+    //- College Grid
+    #collegesList.grid.grid-cols-1.md_grid-cols-2.lg_grid-cols-3.gap-6
+
+      //- Loading Skeleton
+      .col-span-full.text-center.py-12
+        i.fas.fa-spinner.animate-spin.text-4xl.text-purple-600.mb-4
+        p.text-gray-600 Loading college data...
+
+    //- College Details Modal
+    #collegeModal.fixed.inset-0.bg-black.bg-opacity-50.hidden.z-50.flex.items-center.justify-center(style="overflow-y: auto;")
+      .bg-white.rounded-lg.shadow-2xl.max-w-2xl.w-full.mx-4.my-8
+        
+        //- Modal Header
+        .bg-gradient-to-r.from-purple-600.to-blue-600.text-white.px-6.py-4.flex.justify-between.items-center
+          h3#modalCollegeName.text-2xl.font-bold -
+          button.text-white.hover_opacity-80(onclick="closeCollegeModal()")
+            i.fas.fa-times.text-2xl
+
+        //- Modal Content
+        .px-6.py-6.space-y-6(style="max-height: 70vh; overflow-y: auto;")
+
+          //- Location & Website
+          .grid.grid-cols-2.gap-4
+
+            .bg-gray-50.p-4.rounded-lg
+              p.text-xs.text-gray-600.uppercase.tracking-wider Location
+              p.text-lg.font-semibold.text-gray-800#modalLocation -
+            
+            .bg-gray-50.p-4.rounded-lg
+              a#modalWebsite.text-purple-600.hover_text-purple-800.font-semibold(href="#" target="_blank" rel="noopener")
+                i.fas.fa-globe.mr-2
+                | Visit Official Website
+
+          //- Placement Data
+          .border-t.pt-6
+            h4.text-xl.font-bold.text-gray-800.mb-4
+              i.fas.fa-briefcase.mr-2.text-green-600
+              | Placement Statistics
+
+            .grid.grid-cols-2.md_grid-cols-3.gap-4
+
+              .bg-green-50.p-4.rounded-lg.border-l-4.border-green-600
+                p.text-xs.text-gray-700.uppercase Avg Package
+                p.text-2xl.font-bold.text-green-600#modalAvgPackage -
+                p.text-xs.text-gray-600.mt-1 LPA
+
+              .bg-blue-50.p-4.rounded-lg.border-l-4.border-blue-600
+                p.text-xs.text-gray-700.uppercase Placement %
+                p.text-2xl.font-bold.text-blue-600#modalPlacementPct -
+                p.text-xs.text-gray-600.mt-1 Placed
+
+              .bg-purple-50.p-4.rounded-lg.border-l-4.border-purple-600
+                p.text-xs.text-gray-700.uppercase Highest Package
+                p.text-2xl.font-bold.text-purple-600#modalHighestPkg -
+                p.text-xs.text-gray-600.mt-1 LPA
+
+              .bg-orange-50.p-4.rounded-lg.border-l-4.border-orange-600
+                p.text-xs.text-gray-700.uppercase Median Package
+                p.text-2xl.font-bold.text-orange-600#modalMedianPackage -
+                p.text-xs.text-gray-600.mt-1 LPA
+
+              .bg-pink-50.p-4.rounded-lg.border-l-4.border-pink-600
+                p.text-xs.text-gray-700.uppercase Min Package
+                p.text-2xl.font-bold.text-pink-600#modalMinPackage -
+                p.text-xs.text-gray-600.mt-1 LPA
+
+              .bg-indigo-50.p-4.rounded-lg.border-l-4.border-indigo-600
+                p.text-xs.text-gray-700.uppercase Internship Stipend
+                p.text-2xl.font-bold.text-indigo-600#modalStipend -
+                p.text-xs.text-gray-600.mt-1 per month
+
+            //- Top Recruiters
+            .mt-6
+              p.font-semibold.text-gray-800.mb-3
+                i.fas.fa-star.mr-2.text-yellow-500
+                | Top Recruiting Companies
+              .flex.flex-wrap.gap-2#modalRecruiters
+                span.bg-gray-200.text-gray-700.px-3.py-1.rounded-full.text-sm -
+
+            //- Sector Distribution
+            .mt-6
+              p.font-semibold.text-gray-800.mb-3
+                i.fas.fa-chart-pie.mr-2.text-blue-500
+                | Sector Distribution
+              .space-y-2#modalSectors
+                .flex.items-center.gap-2
+                  span.text-sm.text-gray-600 -
+
+          //- Admission Data
+          .border-t.pt-6
+            h4.text-xl.font-bold.text-gray-800.mb-4
+              i.fas.fa-graduation-cap.mr-2.text-blue-600
+              | Admission Criteria
+
+            .grid.grid-cols-2.md_grid-cols-3.gap-4
+
+              .bg-blue-50.p-4.rounded-lg.border-l-4.border-blue-600
+                p.text-xs.text-gray-700.uppercase CAT Cutoff (Gen)
+                p.text-2xl.font-bold.text-blue-600#modalCatCutoff -
+                p.text-xs.text-gray-600.mt-1 Percentile
+
+              .bg-orange-50.p-4.rounded-lg.border-l-4.border-orange-600
+                p.text-xs.text-gray-700.uppercase Avg GPA
+                p.text-2xl.font-bold.text-orange-600#modalAvgGpa -
+                p.text-xs.text-gray-600.mt-1 on 4.0 scale
+
+              .bg-green-50.p-4.rounded-lg.border-l-4.border-green-600
+                p.text-xs.text-gray-700.uppercase Avg Work Exp
+                p.text-2xl.font-bold.text-green-600#modalAvgWorkEx -
+                p.text-xs.text-gray-600.mt-1 years
+
+              .bg-purple-50.p-4.rounded-lg.border-l-4.border-purple-600
+                p.text-xs.text-gray-700.uppercase Batch Size
+                p.text-2xl.font-bold.text-purple-600#modalBatchSize -
+                p.text-xs.text-gray-600.mt-1 students
+
+              .col-span-2.md_col-span-3.bg-gray-50.p-4.rounded-lg
+                p.text-xs.text-gray-700.uppercase.mb-2 Selection Process
+                p.text-lg.font-semibold.text-gray-800#modalAdmissionProcess -
+
+          //- Fees Data
+          .border-t.pt-6
+            h4.text-xl.font-bold.text-gray-800.mb-4
+              i.fas.fa-rupee-sign.mr-2.text-green-600
+              | Fee Structure
+
+            .grid.grid-cols-2.md_grid-cols-3.gap-4
+
+              .bg-green-50.p-4.rounded-lg.border-l-4.border-green-600
+                p.text-xs.text-gray-700.uppercase Total Fees
+                p.text-2xl.font-bold.text-green-600#modalTotalFees -
+                p.text-xs.text-gray-600.mt-1 for full program
+
+              .bg-blue-50.p-4.rounded-lg.border-l-4.border-blue-600
+                p.text-xs.text-gray-700.uppercase Annual Fees
+                p.text-2xl.font-bold.text-blue-600#modalAnnualFees -
+                p.text-xs.text-gray-600.mt-1 per year
+
+              .bg-purple-50.p-4.rounded-lg.border-l-4.border-purple-600
+                p.text-xs.text-gray-700.uppercase Program Duration
+                p.text-2xl.font-bold.text-purple-600#modalDuration -
+                p.text-xs.text-gray-600.mt-1 months
+
+              .col-span-2.md_col-span-3.bg-gray-50.p-4.rounded-lg
+                p.text-xs.text-gray-700.uppercase.mb-2 Placement Guarantee
+                .flex.items-center.gap-2
+                  span#modalPlacementGuarantee.text-lg.font-bold.text-gray-800 -
+
+        //- Modal Footer
+        .bg-gray-50.px-6.py-4.border-t.flex.justify-between
+          button.text-gray-600.hover_text-gray-800.font-semibold(onclick="closeCollegeModal()")
+            i.fas.fa-times.mr-2
+            | Close
+          
+          button.gradient-primary.text-white.px-6.py-2.rounded-lg.font-semibold.hover_opacity-90(onclick="selectCollege()")
+            i.fas.fa-heart.mr-2
+            | Add to My List
+
+  script.
+    let collegesData = [];
+
+    async function loadColleges() {
+      try {
+        // In a real app, fetch from API
+        // const response = await fetch('/api/colleges');
+        // collegesData = await response.json();
+        
+        // For now, using sample data
+        collegesData = [
+          {
+            id: 1,
+            name: 'IIM Ahmedabad',
+            tier: 1,
+            location: 'Ahmedabad, Gujarat',
+            website: 'https://www.iima.ac.in',
+            placement: {
+              average_package: 2050000,
+              median_package: 2000000,
+              max_package: 2750000,
+              min_package: 1700000,
+              placement_percentage: 99.6,
+              highest_package: 2750000,
+              internship_stipend: 250000,
+              top_recruiters: ['McKinsey', 'Goldman Sachs', 'Bain', 'BCG', 'Google', 'Amazon'],
+              sector_distribution: { consulting: 45, finance: 30, it: 15, others: 10 }
+            },
+            admission: {
+              cat_cutoff_general: 97,
+              avg_gpa: 3.78,
+              avg_work_ex: 3.5,
+              batch_size: 506,
+              application_process: 'CAT + WAT + PI'
+            },
+            fees: {
+              total_fees: 2300000,
+              annual_fees: 1150000,
+              duration_months: 24,
+              placement_guarantee: true
+            }
+          },
+          {
+            id: 2,
+            name: 'IIM Bangalore',
+            tier: 1,
+            location: 'Bangalore, Karnataka',
+            website: 'https://www.iimb.ac.in',
+            placement: {
+              average_package: 1950000,
+              median_package: 1900000,
+              max_package: 2650000,
+              min_package: 1600000,
+              placement_percentage: 99.2,
+              highest_package: 2650000,
+              internship_stipend: 240000,
+              top_recruiters: ['McKinsey', 'Goldman Sachs', 'Bain', 'BCG', 'Google', 'Amazon'],
+              sector_distribution: { consulting: 42, finance: 32, it: 18, others: 8 }
+            },
+            admission: {
+              cat_cutoff_general: 95,
+              avg_gpa: 3.72,
+              avg_work_ex: 3.8,
+              batch_size: 492,
+              application_process: 'CAT + GDPI'
+            },
+            fees: {
+              total_fees: 2250000,
+              annual_fees: 1125000,
+              duration_months: 24,
+              placement_guarantee: true
+            }
+          },
+          {
+            id: 11,
+            name: 'ISB Hyderabad',
+            tier: 1,
+            location: 'Hyderabad, Telangana',
+            website: 'https://www.isb.edu',
+            placement: {
+              average_package: 2300000,
+              median_package: 2250000,
+              max_package: 3000000,
+              min_package: 1800000,
+              placement_percentage: 99.8,
+              highest_package: 3000000,
+              internship_stipend: 350000,
+              top_recruiters: ['McKinsey', 'Goldman Sachs', 'Morgan Stanley', 'Google', 'Amazon'],
+              sector_distribution: { consulting: 50, finance: 35, it: 10, others: 5 }
+            },
+            admission: {
+              cat_cutoff_general: 85,
+              avg_gpa: 3.8,
+              avg_work_ex: 4.2,
+              batch_size: 649,
+              application_process: 'GMAT/GRE + Essay + PI'
+            },
+            fees: {
+              total_fees: 4650000,
+              annual_fees: 2325000,
+              duration_months: 24,
+              placement_guarantee: true
+            }
+          }
+        ];
+
+        renderColleges();
+      } catch (error) {
+        console.error('Error loading colleges:', error);
+      }
+    }
+
+    function renderColleges() {
+      const list = document.getElementById('collegesList');
+      list.innerHTML = collegesData.map(college => `
+        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition border-t-4 border-purple-600 cursor-pointer" onclick="openCollegeModal(${college.id})">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800">${college.name}</h3>
+                <p class="text-sm text-gray-600 mt-1">
+                  <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
+                  ${college.location}
+                </p>
+              </div>
+              <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">
+                Tier ${college.tier}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-6">
+              <div class="bg-green-50 p-3 rounded-lg text-center">
+                <p class="text-xs text-gray-600">Avg Package</p>
+                <p class="text-lg font-bold text-green-600">${(college.placement.average_package / 100000).toFixed(1)}</p>
+                <p class="text-xs text-gray-600">LPA</p>
+              </div>
+              <div class="bg-blue-50 p-3 rounded-lg text-center">
+                <p class="text-xs text-gray-600">Placement %</p>
+                <p class="text-lg font-bold text-blue-600">${college.placement.placement_percentage}%</p>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button class="flex-1 bg-purple-100 text-purple-600 py-2 rounded-lg font-semibold hover:bg-purple-200 transition text-sm" onclick="event.stopPropagation(); openCollegeModal(${college.id})">
+                <i class="fas fa-info-circle mr-1"></i> Details
+              </button>
+              <button class="flex-1 border-2 border-purple-600 text-purple-600 py-2 rounded-lg font-semibold hover:bg-purple-50 transition text-sm" onclick="event.stopPropagation(); addCollege(${college.id})">
+                <i class="fas fa-heart mr-1"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openCollegeModal(collegeId) {
+      const college = collegesData.find(c => c.id === collegeId);
+      if (!college) return;
+
+      // Fill modal with data
+      document.getElementById('modalCollegeName').textContent = college.name;
+      document.getElementById('modalLocation').textContent = college.location;
+      document.getElementById('modalWebsite').href = college.website;
+
+      // Placement data
+      document.getElementById('modalAvgPackage').textContent = (college.placement.average_package / 100000).toFixed(2);
+      document.getElementById('modalPlacementPct').textContent = college.placement.placement_percentage + '%';
+      document.getElementById('modalHighestPkg').textContent = (college.placement.highest_package / 100000).toFixed(2);
+      document.getElementById('modalMedianPackage').textContent = (college.placement.median_package / 100000).toFixed(2);
+      document.getElementById('modalMinPackage').textContent = (college.placement.min_package / 100000).toFixed(2);
+      document.getElementById('modalStipend').textContent = '₹' + (college.placement.internship_stipend / 1000) + 'K';
+
+      document.getElementById('modalRecruiters').innerHTML = college.placement.top_recruiters
+        .map(r => `<span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">${r}</span>`)
+        .join('');
+
+      // Admission data
+      document.getElementById('modalCatCutoff').textContent = college.admission.cat_cutoff_general + '%';
+      document.getElementById('modalAvgGpa').textContent = college.admission.avg_gpa;
+      document.getElementById('modalAvgWorkEx').textContent = college.admission.avg_work_ex;
+      document.getElementById('modalBatchSize').textContent = college.admission.batch_size;
+      document.getElementById('modalAdmissionProcess').textContent = college.admission.application_process;
+
+      // Fees data
+      document.getElementById('modalTotalFees').textContent = '₹' + (college.fees.total_fees / 100000).toFixed(1) + 'L';
+      document.getElementById('modalAnnualFees').textContent = '₹' + (college.fees.annual_fees / 100000).toFixed(1) + 'L';
+      document.getElementById('modalDuration').textContent = college.fees.duration_months;
+      document.getElementById('modalPlacementGuarantee').textContent = college.fees.placement_guarantee ? '✓ Yes' : '✗ No';
+      if (college.fees.placement_guarantee) {
+        document.getElementById('modalPlacementGuarantee').className = 'text-lg font-bold text-green-600';
+      }
+
+      document.getElementById('collegeModal').classList.remove('hidden');
+    }
+
+    function closeCollegeModal() {
+      document.getElementById('collegeModal').classList.add('hidden');
+    }
+
+    function selectCollege() {
+      alert('College added to your list! (Integration coming soon)');
+      closeCollegeModal();
+    }
+
+    function addCollege(collegeId) {
+      alert('College added to your list! (Integration coming soon)');
+    }
+
+    // Load colleges on page load
+    loadColleges();
