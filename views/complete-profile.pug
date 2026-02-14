@@ -227,6 +227,7 @@ block content
         const response = await fetch('/api/auth/complete-profile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({
             marks10th,
             marks12th,

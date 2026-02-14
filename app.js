@@ -35,6 +35,7 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === 'production', // HTTPS only in production
       httpOnly: true,
+      sameSite: 'Lax', // Allow credentials in cross-site requests
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
@@ -86,15 +87,20 @@ app.get('/login', (req, res) => {
 
 // Dashboard (Protected)
 app.get('/dashboard', (req, res) => {
+  console.log('Dashboard access - Session userId:', req.session.userId);
   if (!req.session.userId) {
+    console.log('✗ Redirecting to login - No session');
     return res.redirect('/login');
   }
+  console.log('✓ Dashboard access granted for:', req.session.email);
   res.render('dashboard', { title: 'Dashboard - MBA Portal' });
 });
 
 // Profile page (Protected)
 app.get('/profile', (req, res) => {
+  console.log('Profile access - Session userId:', req.session.userId);
   if (!req.session.userId) {
+    console.log('✗ Redirecting to login - No session');
     return res.redirect('/login');
   }
   res.render('profile', { title: 'My Profile - MBA Portal' });
@@ -102,7 +108,9 @@ app.get('/profile', (req, res) => {
 
 // Complete Profile page (for new users)
 app.get('/complete-profile', (req, res) => {
+  console.log('Complete-profile access - Session userId:', req.session.userId);
   if (!req.session.userId) {
+    console.log('✗ Redirecting to login - No session');
     return res.redirect('/login');
   }
   res.render('complete-profile', { title: 'Complete Your Profile - MBA Portal' });

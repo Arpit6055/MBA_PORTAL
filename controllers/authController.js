@@ -47,7 +47,7 @@ const requestOTP = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'OTP sent to your email. Valid for 10 minutes.',
-      userId: user.id,
+      userId: user._id,
     });
   } catch (error) {
     console.error('Error requesting OTP:', error);
@@ -104,14 +104,16 @@ const verifyOTP = async (req, res) => {
     }
 
     // Set session/cookie
-    req.session.userId = user.id;
+    req.session.userId = user._id || user.id;
     req.session.email = user.email;
     req.session.isVerified = true;
+
+    console.log('✓ Session set for user:', req.session.userId);
 
     // Save session before sending response
     req.session.save((err) => {
       if (err) {
-        console.error('Error saving session:', err);
+        console.error('✗ Error saving session:', err);
         return res.status(500).json({
           success: false,
           message: 'Failed to create session. Please try again.',
@@ -119,10 +121,11 @@ const verifyOTP = async (req, res) => {
         });
       }
 
+      console.log('✓ Session saved successfully');
       res.status(200).json({
         success: true,
         message: 'OTP verified successfully. Logging you in...',
-        userId: user.id,
+        userId: user._id || user.id,
         profileComplete: user.profile_complete,
         redirectUrl: user.profile_complete ? '/dashboard' : '/complete-profile',
       });
