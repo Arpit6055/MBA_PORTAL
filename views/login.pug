@@ -147,13 +147,12 @@ block content
               i.fas.fa-check.text-green-500.mr-2
               | No password to remember
 
-  script
-    :javascript
-      // ===========================
-      // OTP Login Flow
-      // ===========================
+  script.
+    // ===========================
+    // OTP Login Flow
+    // ===========================
 
-      let currentEmail = '';
+    let currentEmail = '';
       let otpTimer;
       const OTP_EXPIRY = 600; // 10 minutes in seconds
 

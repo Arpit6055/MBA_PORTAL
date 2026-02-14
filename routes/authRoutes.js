@@ -20,6 +20,9 @@ router.post('/verify-otp', authController.verifyOTP);
 // Resend OTP
 router.post('/resend-otp', authController.resendOTP);
 
+// Complete profile (after OTP verification)
+router.post('/complete-profile', authController.completeProfile);
+
 /**
  * Protected Routes (Authentication Required)
  */

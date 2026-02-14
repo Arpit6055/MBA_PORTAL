@@ -160,56 +160,96 @@ block content
               i.fas.fa-check.mr-2
               | Complete Profile
 
-  script
-    :javascript
-      // Form Navigation
-      const step1 = document.getElementById('step1');
-      const step2 = document.getElementById('step2');
-      const step3 = document.getElementById('step3');
-      const progressBar = document.getElementById('progressBar');
-      const progressPercent = document.getElementById('progressPercent');
+  script.
+    // Form Navigation
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
 
-      let currentStep = 1;
+    let currentStep = 1;
 
-      function updateProgress() {
-        const percent = currentStep * 33;
-        progressBar.style.width = percent + '%';
-        progressPercent.textContent = percent + '%';
+    function updateProgress() {
+      const percent = currentStep * 33;
+      progressBar.style.width = percent + '%';
+      progressPercent.textContent = percent + '%';
+    }
+
+    document.getElementById('nextStep1').addEventListener('click', () => {
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      currentStep = 2;
+      updateProgress();
+    });
+
+    document.getElementById('nextStep2').addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+      currentStep = 3;
+      updateProgress();
+    });
+
+    document.getElementById('backStep2').addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+      currentStep = 1;
+      updateProgress();
+    });
+
+    document.getElementById('backStep3').addEventListener('click', () => {
+      step3.classList.add('hidden');
+      step2.classList.remove('hidden');
+      currentStep = 2;
+      updateProgress();
+    });
+
+    document.getElementById('completeProfileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Collect form data
+      const marks10th = document.getElementById('marks10th').value;
+      const marks12th = document.getElementById('marks12th').value;
+      const marksGrad = document.getElementById('marksGrad').value;
+      const stream = document.getElementById('gstream').value;
+      const company = document.getElementById('company').value || null;
+      const experienceMonths = document.getElementById('experience').value || 0;
+      const selectedColleges = Array.from(document.querySelectorAll('input[name="colleges"]:checked'))
+        .map(cb => cb.value);
+
+      // Validate required fields
+      if (!marks10th || !marks12th || !marksGrad || !stream) {
+        alert('Please fill in all academic details');
+        return;
       }
 
-      document.getElementById('nextStep1').addEventListener('click', () => {
-        step1.classList.add('hidden');
-        step2.classList.remove('hidden');
-        currentStep = 2;
-        updateProgress();
-      });
+      try {
+        const response = await fetch('/api/auth/complete-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            marks10th,
+            marks12th,
+            marksGrad,
+            stream,
+            company,
+            experienceMonths: parseInt(experienceMonths),
+            colleges: selectedColleges,
+          })
+        });
 
-      document.getElementById('nextStep2').addEventListener('click', () => {
-        step2.classList.add('hidden');
-        step3.classList.remove('hidden');
-        currentStep = 3;
-        updateProgress();
-      });
+        const data = await response.json();
 
-      document.getElementById('backStep2').addEventListener('click', () => {
-        step2.classList.add('hidden');
-        step1.classList.remove('hidden');
-        currentStep = 1;
-        updateProgress();
-      });
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to save profile');
+        }
 
-      document.getElementById('backStep3').addEventListener('click', () => {
-        step3.classList.add('hidden');
-        step2.classList.remove('hidden');
-        currentStep = 2;
-        updateProgress();
-      });
+        // Success - redirect to dashboard
+        console.log('Profile saved successfully!');
+        window.location.href = data.redirectUrl || '/dashboard';
 
-      document.getElementById('completeProfileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        console.log('Profile completed! Redirecting to dashboard...');
-        // API call to save profile
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 1000);
-      });
+      } catch (error) {
+        console.error('Error saving profile:', error);
+        alert('Failed to save profile: ' + error.message);
+      }
+    });

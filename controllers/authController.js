@@ -108,12 +108,24 @@ const verifyOTP = async (req, res) => {
     req.session.email = user.email;
     req.session.isVerified = true;
 
-    res.status(200).json({
-      success: true,
-      message: 'OTP verified successfully. Logging you in...',
-      userId: user.id,
-      profileComplete: user.profile_complete,
-      redirectUrl: user.profile_complete ? '/dashboard' : '/complete-profile',
+    // Save session before sending response
+    req.session.save((err) => {
+      if (err) {
+        console.error('Error saving session:', err);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to create session. Please try again.',
+          error: err.message,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'OTP verified successfully. Logging you in...',
+        userId: user.id,
+        profileComplete: user.profile_complete,
+        redirectUrl: user.profile_complete ? '/dashboard' : '/complete-profile',
+      });
     });
   } catch (error) {
     console.error('Error verifying OTP:', error);
@@ -232,8 +244,74 @@ const getCurrentUser = async (req, res) => {
 };
 
 /**
+ * Complete user profile
+ * POST /auth/complete-profile
+ */
+const completeProfile = async (req, res) => {
+  try {
+    // Check authentication
+    if (!req.session.userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authenticated. Please log in.',
+      });
+    }
+
+    const { marks10th, marks12th, marksGrad, stream, company, experienceMonths, colleges } = req.body;
+
+    // Validate inputs
+    if (!marks10th || !marks12th || !marksGrad || !stream) {
+      return res.status(400).json({
+        success: false,
+        message: 'Academic details are required',
+      });
+    }
+
+    // Update academic profile
+    await UserModel.updateAcademicProfile(
+      req.session.userId,
+      parseFloat(marks10th),
+      parseFloat(marks12th),
+      parseFloat(marksGrad),
+      stream
+    );
+
+    // Update work experience if provided
+    if (company && experienceMonths !== undefined) {
+      await UserModel.updateWorkExperience(
+        req.session.userId,
+        company,
+        parseInt(experienceMonths)
+      );
+    }
+
+    // Save target colleges if provided
+    if (colleges && colleges.length > 0) {
+      await UserModel.saveTargetColleges(req.session.userId, colleges);
+    }
+
+    // Mark profile as complete
+    await UserModel.markProfileComplete(req.session.userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile completed successfully!',
+      redirectUrl: '/dashboard',
+    });
+  } catch (error) {
+    console.error('Error completing profile:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to complete profile. Please try again.',
+      error: error.message,
+    });
+  }
+};
+
+/**
  * Helper function to validate email format
  */
+
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -256,6 +334,7 @@ module.exports = {
   requestOTP,
   verifyOTP,
   resendOTP,
+  completeProfile,
   logout,
   getCurrentUser,
   isAuthenticated,

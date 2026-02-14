@@ -14,26 +14,25 @@ html(lang="en")
     //- Font Awesome for icons
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
     
-    style
-      :css
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background: #f8f9fa;
-        }
-        .gradient-primary {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .gradient-text {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
+    style.
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f8f9fa;
+      }
+      .gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
   
   body
     //- Navigation
@@ -81,20 +80,19 @@ html(lang="en")
         .border-t.border-gray-700.mt-8.pt-8.text-center.text-gray-400
           p © 2024 MBA Aspirant Portal. All rights reserved.
 
-    script
-      :javascript
-        // Handle logout
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-          logoutBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            try {
-              const response = await fetch('/api/auth/logout');
-              if (response.ok) {
-                window.location.href = '/login';
-              }
-            } catch (error) {
-              console.error('Logout error:', error);
+    script.
+      // Handle logout
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            const response = await fetch('/api/auth/logout');
+            if (response.ok) {
+              window.location.href = '/login';
             }
-          });
-        }
+          } catch (error) {
+            console.error('Logout error:', error);
+          }
+        });
+      }

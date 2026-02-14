@@ -148,6 +148,22 @@ class UserModel {
     }
     return await db.deleteOne('users', { _id: userId });
   }
+
+  /**
+   * Save target colleges for a user
+   */
+  static async saveTargetColleges(userId, colleges) {
+    if (typeof userId === 'string') {
+      userId = new ObjectId(userId);
+    }
+    // Save target colleges to the target_colleges collection
+    const insertData = colleges.map((college) => ({
+      user_id: userId,
+      college_name: college,
+      created_at: new Date(),
+    }));
+    return await db.insertMany('target_colleges', insertData);
+  }
 }
 
 module.exports = UserModel;

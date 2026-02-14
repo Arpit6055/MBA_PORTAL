@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "init-db": "node scripts/init-db.js"
+    "init-db": "node scripts/init-db.js",
+    "test-setup": "node scripts/test-setup.js"
   },
   "keywords": [
     "MBA",
