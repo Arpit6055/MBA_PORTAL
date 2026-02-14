@@ -17,7 +17,7 @@ async function resetDatabase() {
     const connection = await db.connect();
 
     // Get all collections
-    const collections = await connection.db.listCollections().toArray();
+    const collections = await connection.listCollections().toArray();
     console.log(`Found ${collections.length} collections to drop\n`);
 
     // Drop each collection

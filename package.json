@@ -6,8 +6,6 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "stop": "pkill -f 'node app.js' || echo 'Server not running'",
-    "restart": "npm stop && npm start",
     "init-db": "node scripts/init-db.js",
     "reset-db": "node scripts/reset-db.js",
     "test-setup": "node scripts/test-setup.js",
@@ -15,7 +13,6 @@
     "scrape:college-data": "node scripts/scrape-college-data.js",
     "scrape:dedup": "node scripts/dedup.js",
     "test": "node scripts/test-api.js",
-    "test-api": "node scripts/test-api.js",
     "health": "curl http://localhost:3000/admin/scraper-status"
   },
   "keywords": [
